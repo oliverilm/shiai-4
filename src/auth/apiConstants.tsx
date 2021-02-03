@@ -8,7 +8,7 @@ export default {
     COMPETITION_CREATE: "",
     COMPETITION_UPDATE: "",
     COMPETITION_DELETE: "",
-    
+
     CLUB_LIST: "",
     CLUB_DETAIL: "",
     CLUB_UPDATE: "",
@@ -23,5 +23,6 @@ export default {
 
     // FACEBOOK_AUTH_URL: `${BASE}rest-auth/facebook/`,
     // GOOGLE_AUTH_URL: `${BASE}rest-auth/google/`,
-    BASE_URL: BASE
+    BASE_URL: BASE,
+    TOKEN: "kmasdk2me241ASAS#\"!23alö,f"
 }

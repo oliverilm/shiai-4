@@ -1,3 +1,5 @@
+import apiConstants from "../auth/apiConstants";
+
 export interface GoogleAuthBodyInterface {
     access_token: string;
     code?: string;
@@ -77,7 +79,77 @@ export interface RootObject {
 }
 
 export const filterCorrectData = (data: RootObject): GoogleAuthBodyInterface => {
-    const {access_token, id_token} = data.uc;
-    return {access_token, id_token}
+    const { access_token, id_token } = data.uc;
+    return { access_token, id_token }
 
+}
+
+
+export interface User {
+    pk: number;
+    username: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+}
+
+export interface Data {
+    access_token: string;
+    refresh_token: string;
+    user: User;
+}
+
+export interface Headers {
+    "access-control-allow-credentials": string;
+    "access-control-allow-headers": string;
+    "access-control-allow-methods": string;
+    "access-control-allow-origin": string;
+    "access-control-expose-headers": string;
+    allow: string;
+    connection: string;
+    "content-length": string;
+    "content-type": string;
+    date: string;
+    "referrer-policy": string;
+    server: string;
+    vary: string;
+    "x-content-type-options": string;
+}
+
+export interface Headers2 {
+    Accept: string;
+    "Content-Type": string;
+}
+
+export interface Config {
+    url: string;
+    method: string;
+    data: string;
+    headers: Headers2;
+    baseURL: string;
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+}
+
+
+export interface AuthResponseRootObject {
+    data: Data;
+    status: number;
+    statusText: string;
+    headers: Headers;
+    config: Config;
+    request: Request;
+}
+
+export const handleLocalStoragePopulation = (data: AuthResponseRootObject): boolean => {
+    if (data.status === 200) {
+        localStorage.setItem(apiConstants.TOKEN, JSON.stringify(data.data))
+        return true;
+    }
+    return false;
 }
