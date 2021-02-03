@@ -1,5 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios"
 
+import { filterCorrectData } from "../utils";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
@@ -82,9 +83,7 @@ const api = {
     // },
     auth: {
     //   authenticate: () => {},
-      googleAuth: (data: any) => {
-          postRequest("auth/google/", data)
-      },
+      googleAuth: (data: any) => postRequest("auth/google/", filterCorrectData(data)),
     //   facebookAuth: () => {}
     }
 }

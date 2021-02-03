@@ -5,9 +5,8 @@ import api from '../auth';
 
 export const GoogleAuthButton = () => {
 
-    const googleResponse = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-        console.log(response)
-        const result = api.auth.googleAuth(response)
+    const googleResponse = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
+        const result = await api.auth.googleAuth(response)
         console.log({result})
         
       }
