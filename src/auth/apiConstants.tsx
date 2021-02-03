@@ -1,4 +1,4 @@
-const BASE = "http://localhost:8000/api/"
+const BASE = "http://localhost:8008/"
 // base is not neede because it is set in the axios instance.
 
 export default {

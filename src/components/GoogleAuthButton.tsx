@@ -1,10 +1,15 @@
 import React from 'react'
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
+import api from '../auth';
+
 export const GoogleAuthButton = () => {
 
     const googleResponse = (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-        console.log(response);
+        console.log(response)
+        const result = api.auth.googleAuth(response)
+        console.log({result})
+        
       }
 
       return (
@@ -12,7 +17,7 @@ export const GoogleAuthButton = () => {
           <h1>LOGIN WITH GOOGLE</h1>
         
           <GoogleLogin
-            clientId="<Google Client ID>"
+            clientId="762148197853-jne57s4j8cpd8cuo9h06h66p5g7u90kq.apps.googleusercontent.com"
             buttonText="LOGIN WITH GOOGLE"
             onSuccess={googleResponse}
             onFailure={googleResponse}

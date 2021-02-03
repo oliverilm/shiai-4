@@ -49,7 +49,7 @@ interface ClubListResponse extends MainResponse {
     clubs: ClubCreateResponse[];
 }
 
-export default {
+const api = {
     competitions: {
         list: (): Promise<ClubListResponse> => 
           getRequest(apiConstants.COMPETITION_LIST),
@@ -80,9 +80,13 @@ export default {
     //     update: () => {},
     //     delete: () => {},
     // },
-    // auth: {
+    auth: {
     //   authenticate: () => {},
-    //   googleAuth: () => {},
+      googleAuth: (data: any) => {
+          postRequest("auth/google/", data)
+      },
     //   facebookAuth: () => {}
-    // }
+    }
 }
+
+export default api;
