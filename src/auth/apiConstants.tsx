@@ -3,7 +3,7 @@ const BASE = "http://localhost:8008/"
 
 export default {
 
-    COMPETITION_LIST: "",
+    COMPETITION_LIST: "competition-list",
     COMPETITION_DETAIL: "",
     COMPETITION_CREATE: "",
     COMPETITION_UPDATE: "",

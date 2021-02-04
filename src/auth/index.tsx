@@ -6,6 +6,11 @@ import apiConstants from "./apiConstants"
 axios.defaults.baseURL = apiConstants.BASE_URL;
 axios.defaults.headers.get['Accept'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
+axios.interceptors.request.use(req => {
+    // if request needs authentication and it is not provided. log user out.
+
+    return req
+})
 
 const setHeaders = () => {
     const tokens = localStorage.getItem(apiConstants.TOKEN)
@@ -58,7 +63,7 @@ interface ClubCreateResponse extends MainResponse {
 }
 
 interface ClubListResponse extends MainResponse {
-    clubs: ClubCreateResponse[];
+    data: [];
 }
 
 const api = {
