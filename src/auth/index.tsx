@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios"
 
-import { filterCorrectData, handleLocalStoragePopulation, RootObject } from "../utils";
+import { filterCorrectData, handleLocalStoragePopulation, RootObject, UserVerifyResult } from "../utils";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
@@ -105,7 +105,7 @@ const api = {
             handleLocalStoragePopulation(result)
             return result
         },
-        verifyUser: () => getRequest(apiConstants.VERIFYUSER)
+        verifyUser: (): Promise<UserVerifyResult> => getRequest(apiConstants.VERIFYUSER)
         //   facebookAuth: () => {}
     }
 }
