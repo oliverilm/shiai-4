@@ -160,8 +160,8 @@ export const getCredentials = (): {
 } => {
     const data = localStorage.getItem(apiConstants.TOKEN)
     if (data) {
-        const {access_token, refresh_token } = JSON.parse(data)
-        return {access_token, refresh_token}
+        const { access_token, refresh_token } = JSON.parse(data)
+        return { access_token, refresh_token }
     }
     return {
         access_token: null, refresh_token: null
@@ -172,4 +172,46 @@ export const getCredentials = (): {
 
 export const removeCredentials = () => {
     localStorage.removeItem(apiConstants.TOKEN)
+}
+
+
+export interface Data {
+    id: number;
+    last_login: Date;
+    is_superuser: boolean;
+    username: string;
+    first_name: string;
+    last_name: string;
+    email: string;
+    is_staff: boolean;
+    is_active: boolean;
+    date_joined: Date;
+    groups: any[];
+    user_permissions: any[];
+}
+export interface Headers2 {
+    Accept: string;
+    Authorization: string;
+}
+
+export interface Config {
+    url: string;
+    method: string;
+    headers: Headers2;
+    baseURL: string;
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+}
+export interface UserVerifyResult {
+    data: Data;
+    status: number;
+    statusText: string;
+    headers: Headers;
+    config: Config;
+    request: Request;
 }
