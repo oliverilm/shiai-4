@@ -1,23 +1,16 @@
-import React, {useEffect, useState} from 'react'
+import React, {useContext,useEffect, useState} from 'react'
 import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login';
 
-import api from '../auth';
+import api from '../../../auth';
+import { AuthContext } from '../../../hooks/context';
 
 export const GoogleAuthButton = () => {
-  const [competitions, setCompetitions] = useState([])
-  const [authenticated, setAuthenticated] = useState(false)
-
-  useEffect(() => {
-    api.competitions.list().then(res => {
-      setCompetitions(res.data)
-    })
-  }, [authenticated])
+  const auth = useContext(AuthContext)
 
   const googleResponse = async (response: GoogleLoginResponse | GoogleLoginResponseOffline) => {
-    const result = await api.auth.googleAuth(response)
-    console.log({ result })
-    setAuthenticated(true)
-
+    // move this logic to the app.js file or update the context here.
+    await api.auth.googleAuth(response)
+    auth.login()
   }
 
   return (
@@ -30,9 +23,6 @@ export const GoogleAuthButton = () => {
         onSuccess={googleResponse}
         onFailure={googleResponse}
       />
-      <div style={{margin: "3em"}}>
-      {JSON.stringify(competitions)}
-      </div>
     </div>
   );
 }

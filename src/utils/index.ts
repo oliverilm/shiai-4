@@ -153,3 +153,23 @@ export const handleLocalStoragePopulation = (data: AuthResponseRootObject): bool
     }
     return false;
 }
+
+export const getCredentials = (): {
+    access_token: string | null;
+    refresh_token: string | null;
+} => {
+    const data = localStorage.getItem(apiConstants.TOKEN)
+    if (data) {
+        const {access_token, refresh_token } = JSON.parse(data)
+        return {access_token, refresh_token}
+    }
+    return {
+        access_token: null, refresh_token: null
+    }
+
+}
+
+
+export const removeCredentials = () => {
+    localStorage.removeItem(apiConstants.TOKEN)
+}

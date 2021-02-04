@@ -105,6 +105,7 @@ const api = {
             handleLocalStoragePopulation(result)
             return result
         },
+        verifyUser: () => getRequest(apiConstants.VERIFYUSER)
         //   facebookAuth: () => {}
     }
 }

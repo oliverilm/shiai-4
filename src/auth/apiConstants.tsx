@@ -24,5 +24,6 @@ export default {
     // FACEBOOK_AUTH_URL: `${BASE}rest-auth/facebook/`,
     // GOOGLE_AUTH_URL: `${BASE}rest-auth/google/`,
     BASE_URL: BASE,
-    TOKEN: "kmasdk2me241ASAS#\"!23alö,f"
+    TOKEN: "kmasdk2me241ASAS#\"!23alö,f",
+    VERIFYUSER: "auth/verifyUser/"
 }
