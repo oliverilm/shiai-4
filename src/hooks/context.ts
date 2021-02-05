@@ -21,9 +21,13 @@ export const AuthContext = createContext({
 
 export const LoadingContext = createContext({
     isLoading: false,
-    setLoading: () => {},
+    setLoading: () => {
+        return;
+    },
 })
 
 export const NotificationContext = createContext({
-    addAlert: (message: string, variant: "success" | "error" | "warning") => {}
+    addAlert: (message: string, variant: "success" | "error" | "warning") => {
+        return;
+    }
 })

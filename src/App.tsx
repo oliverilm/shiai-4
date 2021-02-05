@@ -1,20 +1,20 @@
 import './App.scss';
 
+import Alert from '@material-ui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Switch
 } from "react-router-dom";
-import Alert from '@material-ui/lab/Alert';
 
 import api from './auth';
 import Navbar from './components/public/Navbar';
-import { AuthContext, NotificationContext, LoadingContext } from "./hooks/context"
+import PageNotFound from './components/public/PageNotFound';
+import { AuthContext, LoadingContext,NotificationContext } from "./hooks/context"
 import { Data, getCredentials, removeCredentials } from "./utils/index"
 import Competitions from './views/competitions/Competitions';
 import Home from './views/home/Home';
-import PageNotFound from './components/public/PageNotFound';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
@@ -110,7 +110,7 @@ const CustomAlert = ({ message, variant, id, remove }: CustomAlertProps) => {
     return () => {
       mounted = false
     }
-  }, [])
+  }, [id, remove])
   
   return  <Alert className="custom-alert" severity={variant} onClose={() => {remove(id)}} style={{marginTop: "1em", width: "25vw"}}>{message}</Alert>
 }

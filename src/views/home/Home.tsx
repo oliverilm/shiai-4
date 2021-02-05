@@ -3,9 +3,9 @@ import "./home.scss"
 import React, { useContext, useEffect, useState } from 'react'
 
 import api from "../../auth"
-import { Competition } from "../../utils/interfaces"
-import { NotificationContext } from "../../hooks/context"
 import CountrySelect from "../../components/public/CountriesSelect"
+import { NotificationContext } from "../../hooks/context"
+import { Competition } from "../../utils/interfaces"
 
 
 
