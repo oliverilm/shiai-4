@@ -10,9 +10,9 @@ import {
 
 import api from './auth';
 import Navbar from './components/public/Navbar';
-import PageNotFound from './components/public/PageNotFound';
 import { AuthContext, LoadingContext,NotificationContext } from "./hooks/context"
 import { Data, getCredentials, removeCredentials } from "./utils/index"
+import PageNotFound from './views/404page/PageNotFound';
 import Competitions from './views/competitions/Competitions';
 import Home from './views/home/Home';
 
