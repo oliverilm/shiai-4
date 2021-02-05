@@ -1,6 +1,6 @@
 import axios, { AxiosRequestConfig } from "axios"
 
-import { filterCorrectData, handleLocalStoragePopulation, RootObject, UserVerifyResult } from "../utils";
+import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
