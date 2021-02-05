@@ -53,14 +53,16 @@ function App() {
     <AuthContext.Provider value={{ isAuthenticated: isAuthenticated, user: user, login: login, logout: logout, access: null, refresh: null }}>
       <Router>
         <div className="App">
-          <Navbar />
+          <Navbar>
 
-          <Switch>
-            <Route path="/" exact>
-              <Home />
-            </Route>
-            <Route path="/competitions" component={Competitions} exact />
-          </Switch>
+            <Switch>
+              <Route path="/" exact>
+                <Home />
+              </Route>
+              <Route path="/competitions" component={Competitions} exact />
+            </Switch>
+            
+          </Navbar>
         </div>
       </Router>
 

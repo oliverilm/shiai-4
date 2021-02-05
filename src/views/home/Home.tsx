@@ -3,7 +3,6 @@ import "./home.scss"
 import React, { useContext, useEffect, useState } from 'react'
 
 import api from "../../auth"
-import { GoogleAuthButton } from "../../components/public/auth/GoogleAuthButton"
 import { Competition } from "../../utils/interfaces"
 
 
