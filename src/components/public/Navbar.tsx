@@ -15,13 +15,13 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AccountCircle from '@material-ui/icons/AccountCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MailIcon from '@material-ui/icons/Mail';
 import MenuIcon from '@material-ui/icons/Menu';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
 import clsx from 'clsx';
 import React, { useContext } from 'react'
+import { Link } from "react-router-dom";
 
 import { AuthContext } from '../../hooks/context';
+import {drawerRoutes} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./AuthModal";
 
@@ -120,6 +120,27 @@ const Navbar = ({children}: any) => {
         auth.logout()
     }
 
+    const renderRoutes = () => {
+      const first = drawerRoutes.firstGroup.map(route => {
+        return (
+          <ListItem key={route.name} component={Link } button to={route.route} >
+            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        )
+      })
+
+      const second = drawerRoutes.secondGroup.map(route => {
+        return (
+          <ListItem key={route.name} component={Link } button to={route.route} >
+            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        )
+      })
+      return (<><List>{first}</List> <Divider/> <List>{second}</List></>)
+    }
+
     return (
         <div className={classes.root}>
 
@@ -149,7 +170,7 @@ const Navbar = ({children}: any) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography variant="h6" noWrap style={{flexGrow: 1}}>
+            <Typography variant="h6" noWrap component={Link} to={"/"} style={{flexGrow: 1, textDecoration: "none", color: "white"}}>
               Shiai.eu
             </Typography>
               <div>
@@ -192,23 +213,7 @@ const Navbar = ({children}: any) => {
             </IconButton>
           </div>
           <Divider />
-          <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
-          <Divider />
-          <List>
-            {['All mail', 'Trash', 'Spam'].map((text, index) => (
-              <ListItem button key={text}>
-                <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItem>
-            ))}
-          </List>
+              {renderRoutes()}
         </Drawer>
         <main className={classes.content}>
             <div className={classes.toolbar} />

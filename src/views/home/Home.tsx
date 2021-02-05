@@ -1,8 +1,9 @@
 import "./home.scss"
 
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import api from "../../auth"
+import CountrySelect from "../../components/public/CountriesSelect"
 import { Competition } from "../../utils/interfaces"
 
 
@@ -12,9 +13,11 @@ const Home = () => {
 
     useEffect(() => {
         let mounted = true
-        api.competitions.list().then(res => {
-            setCompetitions(res.data)
-        })
+        if (mounted) {
+            api.competitions.list().then(res => {
+                setCompetitions(res.data)
+            })
+        }
         return () => {
             mounted = false
         }
@@ -23,6 +26,7 @@ const Home = () => {
     return (
         <div>
             {JSON.stringify(competitions)}
+            <CountrySelect />
         </div>
     )
 }

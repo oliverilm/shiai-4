@@ -1,27 +1,26 @@
 import './App.scss';
-import 'semantic-ui-css/semantic.min.css'
 
+import Alert from '@material-ui/lab/Alert';
 import React, { useEffect, useState } from 'react';
 import {
   BrowserRouter as Router,
-  Link,
   Route,
   Switch
 } from "react-router-dom";
 
 import api from './auth';
-import PrivateComponent from './components/private/PrivateComponent';
-import PrivateRoute from './components/private/PrivateRoute';
-import { GoogleAuthButton } from './components/public/auth/GoogleAuthButton';
 import Navbar from './components/public/Navbar';
-import { AuthContext } from "./hooks/context"
+import { AuthContext, LoadingContext,NotificationContext } from "./hooks/context"
 import { Data, getCredentials, removeCredentials } from "./utils/index"
+import PageNotFound from './views/404page/PageNotFound';
 import Competitions from './views/competitions/Competitions';
 import Home from './views/home/Home';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false)
   const [user, setUser] = useState<Data | any | undefined>()
+  const [alerts, setAlerts] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     if (getCredentials().access_token !== null) {
@@ -49,25 +48,71 @@ function App() {
     setUser({})
   }
 
+  const addAlert = (message: string, variant: "success" | "error" | "warning" ) => {
+    setAlerts([...alerts, {message, variant, show: true, id: alerts.length + 1} ])
+  }
+
+  const renderAlerts = () => {
+    return alerts.map(a => {
+      return <CustomAlert key={a.id} message={a.message} variant={a.variant} id={a.id} remove={(id: number) => {setAlerts(alerts => alerts.filter(al => al.id !== id))}} />
+    })
+  }
+
+
+  const toggleLoading = () => {
+    setLoading(!loading)
+  }
+
   return (
     <AuthContext.Provider value={{ isAuthenticated: isAuthenticated, user: user, login: login, logout: logout, access: null, refresh: null }}>
-      <Router>
-        <div className="App">
-          <Navbar>
+      <NotificationContext.Provider value={{ addAlert: addAlert }}>
+        <LoadingContext.Provider value={{isLoading: loading, setLoading: toggleLoading}}>
+          <Router>
+            <div className="App">
+              <Navbar>
 
-            <Switch>
-              <Route path="/" exact>
-                <Home />
-              </Route>
-              <Route path="/competitions" component={Competitions} exact />
-            </Switch>
-            
-          </Navbar>
-        </div>
-      </Router>
+                <Switch>
+                  <Route path="/" component={Home} exact />
+                  <Route path="/competitions" component={Competitions} exact />
 
+                  <Route component={PageNotFound} />
+                </Switch>
+                
+              </Navbar>
+              <div style={{position: "absolute", maxWidth: "25vw", bottom: 30, right: 30}}>
+                {renderAlerts()}
+              </div>
+            </div>
+          </Router>
+        </LoadingContext.Provider>
+      </NotificationContext.Provider>
     </AuthContext.Provider>
   );
+}
+
+interface CustomAlertProps {
+  message: string;
+  variant: "success" | "error" | "warning";
+  id: number;
+  remove: Function;
+}
+
+const CustomAlert = ({ message, variant, id, remove }: CustomAlertProps) => {
+
+  useEffect(() => {
+    let mounted = true;
+    if (mounted) {
+      setTimeout(() => {
+        remove(id)
+      }, 5000)
+    }
+
+    return () => {
+      mounted = false
+    }
+  }, [id, remove])
+  
+  return  <Alert className="custom-alert" severity={variant} onClose={() => {remove(id)}} style={{marginTop: "1em", width: "25vw"}}>{message}</Alert>
 }
 
 

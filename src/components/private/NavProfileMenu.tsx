@@ -1,11 +1,12 @@
-import {AppBar,
+import {
     ListItemIcon,
     Menu, 
     MenuItem,
-    Typography  } from "@material-ui/core"
+    Typography 
+} from "@material-ui/core"
 import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import SendIcon from '@material-ui/icons/Send';
-import React, { useContext, useEffect, useState } from 'react'
+import React from 'react'
 
 
 interface NavProfileMenuProps {
