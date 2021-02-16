@@ -12,7 +12,6 @@ import {AppBar,
     Toolbar,
     Typography  } from "@material-ui/core"
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -21,7 +20,7 @@ import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 
 import { AuthContext } from '../../hooks/context';
-import {drawerRoutes} from "../../utils/routes"
+import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./AuthModal";
 
@@ -97,7 +96,6 @@ const Navbar = ({children}: any) => {
     const classes = useStyles();
     const theme = useTheme();
     const [open, setOpen] = React.useState<boolean>(false);
-    const [anchorEl, setAnchorEl] = React.useState(null);
   
     const handleDrawerOpen = () => {
       setOpen(true);
@@ -106,37 +104,41 @@ const Navbar = ({children}: any) => {
     const handleDrawerClose = () => {
         setOpen(false);
       };
-  
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-      };
+ 
     
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
+   
     const logout = () => {
-        handleClose()
         auth.logout()
     }
 
+    const filterPrivateRoutes = (route: RouteObjectInterface) => {
+      const isLoggedIn = auth.isAuthenticated
+      if (isLoggedIn) return true;
+      if (route.private) return false;
+      return true;
+    }
+
     const renderRoutes = () => {
-      const first = drawerRoutes.firstGroup.map(route => {
-        return (
-          <ListItem key={route.name} component={Link } button to={route.route} >
-            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
-            <ListItemText primary={route.name} />
-          </ListItem>
-        )
+      const first = drawerRoutes.firstGroup
+        .filter(filterPrivateRoutes)
+        .map(route => {
+          return (
+            <ListItem key={route.name} component={Link } button to={route.route} >
+              <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+              <ListItemText primary={route.name} />
+            </ListItem>
+          )
       })
 
-      const second = drawerRoutes.secondGroup.map(route => {
-        return (
-          <ListItem key={route.name} component={Link } button to={route.route} >
-            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
-            <ListItemText primary={route.name} />
-          </ListItem>
-        )
+      const second = drawerRoutes.secondGroup
+        .filter(filterPrivateRoutes)
+        .map(route => {
+          return (
+            <ListItem key={route.name} component={Link } button to={route.route} >
+              <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+              <ListItemText primary={route.name} />
+            </ListItem>
+          )
       })
       return (<><List>{first}</List> <Divider/> <List>{second}</List></>)
     }
@@ -145,11 +147,11 @@ const Navbar = ({children}: any) => {
         <div className={classes.root}>
 
         
-        <NavProfileMenu 
+        {/* <NavProfileMenu 
             anchorEl={anchorEl}
             handleClose={handleClose}
             logout={logout}
-        />
+        /> */}
 
         <CssBaseline />
         <AppBar
@@ -173,25 +175,9 @@ const Navbar = ({children}: any) => {
             <Typography variant="h6" noWrap component={Link} to={"/"} style={{flexGrow: 1, textDecoration: "none", color: "white"}}>
               Shiai.eu
             </Typography>
-              <div>
-                  {auth.isAuthenticated ? (
-                      <div style={{display: "flex", flexDirection: "row", alignItems: "center", cursor: "pointer"}} onClick={handleClick}>
-                        <Typography variant="subtitle1">
-                            {auth.user.email}
-                        </Typography>
-                        <IconButton
-                            aria-label="account of current user"
-                            aria-controls="menu-appbar"
-                            aria-haspopup="true"
-                            color="inherit"
-                        >
-                            <AccountCircle />
-                        </IconButton>
-                    </div>
-              ) : (
-                  <AuthModal />
-              )}
-            </div>
+                  {auth.isAuthenticated 
+                    ? <NavProfileMenu logout={logout}/>
+                    : <AuthModal /> }
           </Toolbar>
         </AppBar>
         <Drawer

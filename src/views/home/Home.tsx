@@ -3,9 +3,10 @@ import "./home.scss"
 import React, { useEffect, useState } from 'react'
 
 import api from "../../auth"
-import CountrySelect from "../../components/public/CountriesSelect"
+import CompetitionMainCard from "../../components/public/competitions/CompetitionMainCard"
+// import CountrySelect from "../../components/public/CountriesSelect"
 import { Competition } from "../../utils/interfaces"
-
+import EventCalendar from "../../components/public/competitions/EventCalendar"
 
 
 const Home = () => {
@@ -23,10 +24,12 @@ const Home = () => {
         }
     }, [])
 
+    
+
     return (
         <div>
-            {JSON.stringify(competitions)}
-            <CountrySelect />
+            {competitions.map(competition => <CompetitionMainCard competition={competition} />)}
+            <EventCalendar />
         </div>
     )
 }
