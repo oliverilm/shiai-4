@@ -72,10 +72,11 @@ function App() {
               <Navbar>
 
                 <Switch>
+                  
                   <Route path="/" component={Home} exact />
                   <Route path="/competitions" component={Competitions} exact />
-
                   <Route component={PageNotFound} />
+
                 </Switch>
                 
               </Navbar>
