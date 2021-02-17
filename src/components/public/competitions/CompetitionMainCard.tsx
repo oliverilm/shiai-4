@@ -21,7 +21,6 @@ export interface Props {
     competition: Competition;
 }
 
-
 const useStyles = makeStyles((theme) => ({
     root: {
       maxWidth: 345,
@@ -46,13 +45,10 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-
 const CompetitionMainCard = ({competition}: Props) => {
     const classes = useStyles();
 
-    const desc = () => {
-        return competition.description.substr(0, 100)
-    }
+    const desc = () => competition.description.substr(0, 100)
 
     return (
         <Card className={classes.root}>

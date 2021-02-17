@@ -106,8 +106,6 @@ const Navbar = ({children}: any) => {
         setOpen(false);
       };
  
-    
-   
     const logout = () => {
         auth.logout()
     }
@@ -146,13 +144,6 @@ const Navbar = ({children}: any) => {
 
     return (
         <div className={classes.root}>
-
-        
-        {/* <NavProfileMenu 
-            anchorEl={anchorEl}
-            handleClose={handleClose}
-            logout={logout}
-        /> */}
 
         <CssBaseline />
         <AppBar
