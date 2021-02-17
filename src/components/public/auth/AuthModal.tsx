@@ -9,7 +9,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
 
-import { GoogleAuthButton } from './auth/GoogleAuthButton';
+import { GoogleAuthButton } from './GoogleAuthButton';
 
 
 const useStyles = makeStyles((theme) => ({

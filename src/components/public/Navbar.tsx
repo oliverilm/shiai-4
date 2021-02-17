@@ -22,7 +22,7 @@ import { Link } from "react-router-dom";
 import { AuthContext } from '../../hooks/context';
 import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
-import AuthModal from "./AuthModal";
+import AuthModal from "./auth/AuthModal";
 import CompetitionAddForm from "./competitions/CompetitionCreateModal";
 
 const drawerWidth = 240;
