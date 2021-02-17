@@ -10,6 +10,12 @@ import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Typography from '@material-ui/core/Typography';
 import PrivateComponent from '../../private/PrivateComponent';
+import { EditorState } from 'draft-js';
+import { useState } from 'react';
+import CompetitionMainInformationForm from './CompetitionMainInformationForm';
+import CompetitionSecondaryInfoForm from './CompetitionSecondaryInfoForm';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -30,12 +36,15 @@ function getSteps() {
   return ['Competition main info', 'Competition secondary info', 'Classes and weights'];
 }
 
-export default function FormDialog() {
+export default function CompetitionAddForm() {
   const [open, setOpen] = React.useState(false);
-
+  const [editorState, setEditorState] = React.useState<EditorState>(EditorState.createEmpty())
+  const [name, setName] = useState<string>("")
   const handleClickOpen = () => {
     setOpen(true);
   };
+  const [startDate, setStartDate] = useState<Date>(new Date())
+  const [endDate, setEndDate] = useState<Date>(new Date())
 
   const handleClose = () => {
     setOpen(false);
@@ -62,9 +71,14 @@ export default function FormDialog() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <div>Competition main detail information <br /> name, <br />image, <br />date range, <br />registration date. </div>
+        return <CompetitionMainInformationForm 
+                  name={name}
+                  setName={setName}
+                  editorState={editorState}
+                  setEditorState={setEditorState}
+          />
       case 1:
-        return 'What is an ad group anyways?';
+        return <CompetitionSecondaryInfoForm endDate={endDate} startDate={startDate} setEndDate={setEndDate} setStartDate={setStartDate} />;
       case 2:
         return 'This is the bit I really care about!';
       default:
@@ -75,10 +89,10 @@ export default function FormDialog() {
   return (
     <div>
       <PrivateComponent>
-        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-          Open form dialog
-        </Button>
-
+        <ListItem onClick={handleClickOpen} style={{cursor: "pointer"}} >
+            <ListItemIcon><AddCircleIcon /></ListItemIcon>
+            <ListItemText primary={"Add Competition"}/>
+        </ListItem>
 
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">

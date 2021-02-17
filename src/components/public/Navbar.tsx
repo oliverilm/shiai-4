@@ -23,6 +23,7 @@ import { AuthContext } from '../../hooks/context';
 import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./AuthModal";
+import CompetitionAddForm from "./competitions/CompetitionCreateModal";
 
 const drawerWidth = 240;
 
@@ -200,6 +201,7 @@ const Navbar = ({children}: any) => {
           </div>
           <Divider />
               {renderRoutes()}
+              <CompetitionAddForm />
         </Drawer>
         <main className={classes.content}>
             <div className={classes.toolbar} />

@@ -1,2 +1,22 @@
 @import 'react-big-calendar/lib/sass/styles';
 @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+
+.editorClassName {
+    border-bottom: 1px solid #c1c1c1;
+    border-radius: 4px;
+    padding: 0px 1em;
+    min-height: 100px;
+}
+
+.toolbarClassName {
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+    border-top: 1px solid #c1c1c1;
+    border-radius: 4px;
+}
+.wrapperClassName {
+    border-right: 1px solid #c1c1c1;
+    border-left: 1px solid #c1c1c1;
+    border-top: 1px solid #c1c1c1;
+    border-radius: 4px;
+}

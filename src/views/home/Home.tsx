@@ -7,7 +7,6 @@ import CompetitionMainCard from "../../components/public/competitions/Competitio
 // import CountrySelect from "../../components/public/CountriesSelect"
 import { Competition } from "../../utils/interfaces"
 import EventCalendar from "../../components/public/competitions/EventCalendar"
-import CompetitionCreateModal from "../../components/public/competitions/CompetitionCreateModal"
 
 
 const Home = () => {
@@ -36,10 +35,6 @@ const Home = () => {
         }}> 
             <div>
                 {competitions.map(competition => <CompetitionMainCard competition={competition} />)}
-            </div>
-
-            <div>
-                <CompetitionCreateModal />
             </div>
 
             <div className="calendar">
