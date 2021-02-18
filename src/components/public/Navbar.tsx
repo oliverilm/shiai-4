@@ -1,16 +1,18 @@
 import "./public.scss"
 
-import {AppBar,
-    CssBaseline,
-    Divider,
-    Drawer,
-    IconButton,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    Toolbar,
-    Typography  } from "@material-ui/core"
+import {
+  AppBar,
+  CssBaseline,
+  Divider,
+  Drawer,
+  IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Toolbar,
+  Typography
+} from "@material-ui/core"
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
@@ -20,11 +22,11 @@ import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 
 import { AuthContext } from '../../hooks/context';
-import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
+import { drawerRoutes, RouteObjectInterface } from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./auth/AuthModal";
-import CompetitionAddForm from "./competitions/CompetitionCreateModal";
 import BottomNav from "./BottomNav";
+import CompetitionAddForm from "./competitions/CompetitionCreateModal";
 
 const drawerWidth = 240;
 
@@ -92,120 +94,121 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({children}: any) => {
-    const auth = useContext(AuthContext)
+const Navbar = ({ children }: any) => {
+  const auth = useContext(AuthContext)
 
-    const classes = useStyles();
-    const theme = useTheme();
-    const [open, setOpen] = React.useState<boolean>(false);
-  
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
+  const classes = useStyles();
+  const theme = useTheme();
+  const [open, setOpen] = React.useState<boolean>(false);
 
-    const handleDrawerClose = () => {
-        setOpen(false);
-      };
- 
-    const logout = () => {
-        auth.logout()
-    }
+  const handleDrawerOpen = () => {
+    setOpen(true);
+  };
 
-    const filterPrivateRoutes = (route: RouteObjectInterface) => {
-      const isLoggedIn = auth.isAuthenticated
-      if (isLoggedIn) return true;
-      if (route.private) return false;
-      return true;
-    }
+  const handleDrawerClose = () => {
+    setOpen(false);
+  };
 
-    const renderRoutes = () => {
-      const first = drawerRoutes.firstGroup
-        .filter(filterPrivateRoutes)
-        .map(route => {
-          return (
-            <ListItem key={route.name} component={Link } button to={route.route} >
-              <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
-              <ListItemText primary={route.name} />
-            </ListItem>
-          )
+  const logout = () => {
+    auth.logout()
+  }
+
+  const filterPrivateRoutes = (route: RouteObjectInterface) => {
+    const isLoggedIn = auth.isAuthenticated
+    if (isLoggedIn) return true;
+    if (route.private) return false;
+    return true;
+  }
+
+  const renderRoutes = () => {
+    const first = drawerRoutes.firstGroup
+      .filter(filterPrivateRoutes)
+      .map(route => {
+        return (
+          <ListItem key={route.name} component={Link} button to={route.route} >
+            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        )
       })
 
-      const second = drawerRoutes.secondGroup
-        .filter(filterPrivateRoutes)
-        .map(route => {
-          return (
-            <ListItem key={route.name} component={Link } button to={route.route} >
-              <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
-              <ListItemText primary={route.name} />
-            </ListItem>
-          )
+    const second = drawerRoutes.secondGroup
+      .filter(filterPrivateRoutes)
+      .map(route => {
+        return (
+          <ListItem key={route.name} component={Link} button to={route.route} >
+            <ListItemIcon>{React.createElement(route.icon)}</ListItemIcon>
+            <ListItemText primary={route.name} />
+          </ListItem>
+        )
       })
-      return (<><List>{first}</List> <Divider/> <List>{second}</List></>)
-    }
+    return (<><List>{first}</List> <Divider /> <List>{second}</List></>)
+  }
 
-    return (
-        <div className={classes.root}>
+  return (
+    <div className={classes.root}>
 
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component={Link} to={"/"} style={{flexGrow: 1, textDecoration: "none", color: "white"}}>
-              Shiai.eu
+      <CssBaseline />
+      <AppBar
+        position="fixed"
+        className={clsx(classes.appBar, {
+          [classes.appBarShift]: open,
+        })}
+      >
+        <Toolbar>
+          <IconButton
+            id="sidebar-hamburger"
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+          >
+            <MenuIcon />
+          </IconButton>
+          <Typography variant="h6" noWrap component={Link} to={"/"} style={{ flexGrow: 1, textDecoration: "none", color: "white" }}>
+            Shiai.eu
             </Typography>
-                  {auth.isAuthenticated 
-                    ? <NavProfileMenu logout={logout}/>
-                    : <AuthModal /> }
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          id="drawer"
-          variant="permanent"
-          className={clsx(classes.drawer, {
+          {auth.isAuthenticated
+            ? <NavProfileMenu logout={logout} />
+            : <AuthModal />}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        id="drawer"
+        variant="permanent"
+        className={clsx(classes.drawer, {
+          [classes.drawerOpen]: open,
+          [classes.drawerClose]: !open,
+        })}
+        classes={{
+          paper: clsx({
             [classes.drawerOpen]: open,
             [classes.drawerClose]: !open,
-          })}
-          classes={{
-            paper: clsx({
-              [classes.drawerOpen]: open,
-              [classes.drawerClose]: !open,
-            }),
-          }}
-        >
-          <div className={classes.toolbar}>
-            <IconButton onClick={handleDrawerClose}>
-              {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
-            </IconButton>
-          </div>
-          <Divider />
-              {renderRoutes()}
-              <CompetitionAddForm />
-        </Drawer>
-                
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
-              {children}
+          }),
+        }}
+      >
+        <div className={classes.toolbar}>
+          <IconButton onClick={handleDrawerClose}>
+            {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
+          </IconButton>
+        </div>
+        <Divider />
+        {renderRoutes()}
+        <CompetitionAddForm />
+      </Drawer>
 
-        </main>
-          <BottomNav />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        {children}
 
-      </div>   
-    )
+      </main>
+      <BottomNav />
+
+    </div>
+  )
 }
 
 

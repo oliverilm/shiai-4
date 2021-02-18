@@ -1,11 +1,12 @@
-import React from 'react';
+import "./public.scss"
+
 import BottomNavigation from '@material-ui/core/BottomNavigation';
 import BottomNavigationAction from '@material-ui/core/BottomNavigationAction';
-import FolderIcon from '@material-ui/icons/Folder';
-import RestoreIcon from '@material-ui/icons/Restore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import LocationOnIcon from '@material-ui/icons/LocationOn';
-import "./public.scss"
+import React from 'react';
+import { Link } from "react-router-dom";
+
+import { bottomNavRoutes } from "../../utils/routes"
+
 
 
 export default function BottomNav() {
@@ -15,18 +16,28 @@ export default function BottomNav() {
     setValue(newValue);
   };
 
+  const renderRoutes = () => {
+    return bottomNavRoutes.map(route => {
+      return (<BottomNavigationAction
+        component={Link}
+        to={route.route}
+        key={route.name}
+        label={route.name}
+        value={route.name}
+        icon={React.createElement(route.icon)} />
+      )
+
+    })
+  }
   return (
     <BottomNavigation id="bottom-nav"
-        style={{
-            position: "fixed",
-            width: "100vw",
-            bottom: 0,
-            zIndex: 100
-        }} value={value} onChange={handleChange}>
-      <BottomNavigationAction label="Recents" value="recents" icon={<RestoreIcon />} />
-      <BottomNavigationAction label="Favorites" value="favorites" icon={<FavoriteIcon />} />
-      <BottomNavigationAction label="Nearby" value="nearby" icon={<LocationOnIcon />} />
-      <BottomNavigationAction label="Folder" value="folder" icon={<FolderIcon />} />
+      style={{
+        position: "fixed",
+        width: "100vw",
+        bottom: 0,
+        zIndex: 100
+      }} value={value} onChange={handleChange}>
+      {renderRoutes()}
     </BottomNavigation>
   );
 }

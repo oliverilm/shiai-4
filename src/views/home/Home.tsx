@@ -1,15 +1,12 @@
 import "./home.scss"
 
 import React, { useEffect, useState } from 'react'
+import styled from "styled-components"
 
 import api from "../../auth"
-import CompetitionMainCard from "../../components/public/competitions/CompetitionMainCard"
-// import CountrySelect from "../../components/public/CountriesSelect"
-import { Competition } from "../../utils/interfaces"
 import EventCalendar from "../../components/public/competitions/EventCalendar"
-import styled from "styled-components"
-import { GoogleAuthButton } from "../../components/public/auth/GoogleAuthButton"
-import GooglePlacesInput from "../../components/public/inputs/GooglePlacesInput"
+import MainList from "../../components/public/competitions/MainList"
+import { Competition } from "../../utils/interfaces"
 
 const Center = styled.div`
     margin: 2em auto;
@@ -48,10 +45,10 @@ const Home = () => {
     return (
         <CenterCol>
             <CenterWidth>
-                {competitions.map(competition => <CompetitionMainCard competition={competition} />)}
+                <MainList competitions={competitions} />
             </CenterWidth>
             <Center>
-                <EventCalendar competitions={competitions}/>
+                <EventCalendar competitions={competitions} />
             </Center>
         </CenterCol>
     )

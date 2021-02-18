@@ -52,6 +52,30 @@ export const drawerRoutes: RootObject = {
         }
     ],
     secondGroup: [
-       
+
     ]
 }
+
+export const bottomNavRoutes = [
+    {
+        name: "Competitions",
+        route: "/competitions",
+        exact: true,
+        private: false,
+        icon: SportsKabaddiIcon
+    },
+    {
+        name: "Clubs",
+        route: "/clubs",
+        exact: true,
+        private: false,
+        icon: HomeIcon
+    },
+    {
+        name: "Results",
+        route: "/results",
+        exact: true,
+        private: false,
+        icon: EqualizerIcon
+    }
+]

@@ -3,7 +3,7 @@ export interface Competition {
     image: string;
     slug: string;
     description: string;
-    dateRange: string;
+    dateRange: string | any;
     location: string;
     registrationEndDate: string;
     owner: string;
