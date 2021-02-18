@@ -85,9 +85,8 @@ export default function CompetitionAddForm() {
         return 'Unknown step';
     }
   }
-
   return (
-    <div>
+    <>
       <PrivateComponent>
         <ListItem onClick={handleClickOpen} style={{cursor: "pointer"}} >
             <ListItemIcon><AddCircleIcon /></ListItemIcon>
@@ -154,6 +153,6 @@ export default function CompetitionAddForm() {
       </Dialog>
       </PrivateComponent>
 
-    </div>
+    </>
   );
 }

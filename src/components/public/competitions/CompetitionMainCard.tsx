@@ -23,7 +23,8 @@ export interface Props {
 
 const useStyles = makeStyles((theme) => ({
     root: {
-      maxWidth: 345,
+      maxWidth: 600,
+      minWidth: "20vw"
     },
     media: {
       height: 0,
@@ -51,7 +52,7 @@ const CompetitionMainCard = ({competition}: Props) => {
     const desc = () => competition.description.substr(0, 100)
 
     return (
-        <Card className={classes.root}>
+      <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
@@ -81,7 +82,7 @@ const CompetitionMainCard = ({competition}: Props) => {
 
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
-        </IconButton>
+        </IconButton>     
 
         <IconButton aria-label="share">
           <ShareIcon />

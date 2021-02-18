@@ -1,6 +1,29 @@
 import React from "react"
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import styled from "styled-components"
+import GooglePlacesInput from "../inputs/GooglePlacesInput";
+import { FormLabel } from "@material-ui/core";
+
+const Row = styled.div`
+  display: flex;
+  flex-direction:row;
+`;
+
+const Col = styled.div`
+  display:flex;
+  flex-direction: column;
+  margin: 1em 0px;
+`;
+
+const Center = styled.div`
+  margin: auto;
+`; 
+
+const Main = styled.div`
+  padding: 2em 0px;
+
+`;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -36,7 +59,11 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
     };
 
     return (
-        <div>
+      <Main>
+        <Col>
+          <Row>
+            <Center>
+
              <TextField
                 id="datetime-local-start"
                 label="Competition start"
@@ -59,7 +86,21 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
                 shrink: true,
                 }}
             />
-        </div>
+            </Center>
+
+          </Row>
+          <Row>
+            <Col>
+
+              <Center>
+                <FormLabel>Competition location</FormLabel>
+                <GooglePlacesInput/>
+              </Center>
+
+            </Col>
+          </Row>
+        </Col>
+      </Main>
     )
 }
 

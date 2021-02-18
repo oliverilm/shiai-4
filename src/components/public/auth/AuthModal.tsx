@@ -1,16 +1,22 @@
-import { Grid } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
+import styled from "styled-components"
+import { FacebookAuthButton } from './FacebookAuthButton';
 
 import { GoogleAuthButton } from './GoogleAuthButton';
 
+const Col = styled.div`
+  display:flex;
+  justify-content: center;
+  flex-direction: column;
+`
 
 const useStyles = makeStyles((theme) => ({
     formRoot: {
@@ -35,9 +41,14 @@ export default function AuthModal() {
 
   return (
     <div>
-      <Button variant="outlined" color="inherit" onClick={handleClickOpen}>
-        Sign In
+      <Button 
+        variant="outlined" 
+        color="inherit" 
+        onClick={handleClickOpen}>
+          Sign In
       </Button>
+
+
       <Dialog
         open={open}
         onClose={handleClose}
@@ -46,24 +57,48 @@ export default function AuthModal() {
       >
         <DialogTitle id="alert-dialog-title">Log in to Shiai.eu</DialogTitle>
 
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            Log in to Shiai.eu using your username and password or your social accounts
-          </DialogContentText>
-          <Grid container spacing={1}>
-              <Grid item xs={12} md={6}>
-                <form className={classes.formRoot} noValidate autoComplete="off">
-                    <TextField id="standard-basic" label="Username" />
-                    <TextField id="standard-basic" label="Password" type={"password"} />
-                    </form>
-              </Grid>
+        <DialogContent style={{minWidth: "25vw", textAlign: "center"}}>
+            <Col>
+              <Col>
 
-              <Grid item xs={12} md={6}>
-                  <GoogleAuthButton />
-              </Grid>
+                <GoogleAuthButton />
+                <FacebookAuthButton />
+                
+              </Col>
+              <Divider style={{margin: "2em 1em"}}/>
+              <Col>
+                    <Typography 
+                      variant="subtitle2"
+                      style={{margin: ".5em 0"}}> 
+                        or log in with username and password 
+                    </Typography>
 
-          </Grid>
+                    <TextField 
+                      id="standard-basic" 
+                      variant="outlined" 
+                      style={{ margin: "1em"}} 
+                      label="Username" />
+
+                    <TextField 
+                      id="standard-basic" 
+                      variant="outlined" 
+                      style={{ margin: "1em"}} 
+                      label="Password" 
+                      type={"password"} />
+
+                    <Divider style={{margin: "1em"}}/>
+
+                    <Button variant="outlined" >Log in</Button>
+
+                    <Typography 
+                      variant="subtitle2"
+                      style={{margin: ".5em 0"}}> 
+                      or if you dont have an account, you can log in with google
+                    </Typography>
+              </Col>
+            </Col>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleClose} color="primary">
             Close
