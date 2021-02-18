@@ -6,3 +6,28 @@
     display: flex;
     flex-direction: column;
 }
+@media only screen and (max-width: 1000px) {
+    #drawer {
+        visibility: hidden;
+    }
+    #bottom-nav {
+        visibility: visible;
+    }   
+    main, main.div {
+        flex-grow: 0;
+        padding: 0
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    #drawer {
+        visibility: visible;
+    }
+    #bottom-nav {
+        visibility: hidden;
+    }
+    main {
+        flex-grow: 1;
+        padding: 3em;
+    }
+}

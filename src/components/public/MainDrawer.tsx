@@ -24,8 +24,6 @@ import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./auth/AuthModal";
 import CompetitionAddForm from "./competitions/CompetitionCreateModal";
-import MainDrawer from "./MainDrawer";
-import BottomNav from "./BottomNav";
 
 const drawerWidth = 240;
 
@@ -93,7 +91,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const Navbar = ({children}: any) => {
+const MainDrawer = ({children}: any) => {
     const auth = useContext(AuthContext)
 
     const classes = useStyles();
@@ -175,7 +173,6 @@ const Navbar = ({children}: any) => {
           </Toolbar>
         </AppBar>
         <Drawer
-          id="drawer"
           variant="permanent"
           className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
@@ -197,17 +194,13 @@ const Navbar = ({children}: any) => {
               {renderRoutes()}
               <CompetitionAddForm />
         </Drawer>
-                
         <main className={classes.content}>
             <div className={classes.toolbar} />
             {children}
-
         </main>
-        <BottomNav />
-
       </div>   
     )
 }
 
 
-export default Navbar;
+export default MainDrawer;

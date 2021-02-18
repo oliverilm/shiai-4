@@ -62,27 +62,25 @@ export default function AuthModal() {
               <Col>
 
                 <GoogleAuthButton />
+                <Divider style={{margin: "1em"}}/>                
                 <FacebookAuthButton />
 
               </Col>
-              <Divider style={{margin: "2em 1em"}}/>
+              <Divider style={{margin: "1em 1em"}}/>
               <Col>
                     <Typography 
-                      variant="subtitle2"
-                      style={{margin: ".5em 0"}}> 
+                      variant="subtitle2"> 
                         or log in with username and password 
                     </Typography>
 
                     <TextField 
                       id="standard-basic" 
-                      variant="outlined" 
-                      style={{ margin: "1em"}} 
+                      style={{ margin: ".5em"}} 
                       label="Username" />
 
                     <TextField 
                       id="standard-basic" 
-                      variant="outlined" 
-                      style={{ margin: "1em"}} 
+                      style={{ margin: ".5em"}} 
                       label="Password" 
                       type={"password"} />
 
