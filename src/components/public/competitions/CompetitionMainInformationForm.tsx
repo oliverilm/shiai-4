@@ -4,7 +4,17 @@ import { EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import React from 'react';
 import { TextField, FormLabel } from "@material-ui/core";
+import styled from "styled-components"
 
+const Root = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MarginTop = styled.div`
+  margin-top: 2em;
+`;
 interface MainFormProps {
   editorState: EditorState;
   setEditorState: Function;
@@ -12,14 +22,8 @@ interface MainFormProps {
   setName: Function;
 }
 
-const CompetitionMainInformationForm = ({editorState, setEditorState, name, setName}: MainFormProps) => {
-
-  return (
-    <div style={{
-      width: "100%",
-      display: "flex",
-      flexDirection: "column"
-    }}>
+const CompetitionMainInformationForm = ({editorState, setEditorState, name, setName}: MainFormProps) => (
+    <Root>
         <TextField 
           required 
           value={name}
@@ -27,8 +31,8 @@ const CompetitionMainInformationForm = ({editorState, setEditorState, name, setN
           id="standard-required" 
           label="Competition Name" 
           defaultValue="My competition" />
-        <div style={{ marginTop: "2em"}}>
 
+        <MarginTop>
           <FormLabel> Competition Description</FormLabel>
           <Editor
             editorState={editorState}
@@ -37,11 +41,9 @@ const CompetitionMainInformationForm = ({editorState, setEditorState, name, setN
             editorClassName="editorClassName"
             onEditorStateChange={(e) => {setEditorState(e)}}
           />
+        </MarginTop>
+    </Root>
+)
 
-        </div>
-
-    </div>
-  )
-}
 
 export default CompetitionMainInformationForm;

@@ -16,6 +16,11 @@ import CompetitionMainInformationForm from './CompetitionMainInformationForm';
 import CompetitionSecondaryInfoForm from './CompetitionSecondaryInfoForm';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import styled from "styled-components"
+
+const MarginDiv = styled.div`
+  margin-bottom: 2em;
+`;
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -95,17 +100,17 @@ export default function CompetitionAddForm() {
 
       <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
-            <Stepper activeStep={activeStep}>
-                {steps.map((label) => {
-                    const stepProps: { completed?: boolean } = {};
-                    const labelProps: { optional?: React.ReactNode } = {};
-                    return (
-                        <Step key={label} {...stepProps}>
-                          <StepLabel {...labelProps}>{label}</StepLabel>
-                        </Step>
-                    );
-                })}
-        </Stepper>
+          <Stepper activeStep={activeStep}>
+              {steps.map((label) => {
+                  const stepProps: { completed?: boolean } = {};
+                  const labelProps: { optional?: React.ReactNode } = {};
+                  return (
+                      <Step key={label} {...stepProps}>
+                        <StepLabel {...labelProps}>{label}</StepLabel>
+                      </Step>
+                  );
+              })}
+          </Stepper>
         </DialogTitle>
         <DialogContent>
         {activeStep === steps.length ? (
@@ -115,11 +120,9 @@ export default function CompetitionAddForm() {
             </Typography>
           </div>
         ) : (
-          <div style={{
-            marginBottom: "2em"
-          }}>
+          <MarginDiv>
             <div className={classes.instructions}>{getStepContent(activeStep)}</div>
-            </div>
+          </MarginDiv>
         )}
         </DialogContent>
         <DialogActions style={{
@@ -127,27 +130,27 @@ export default function CompetitionAddForm() {
             flexDirection: "row",
             justifyContent: "space-between"
         }}>
-            <div>
-            <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
-                Back
-            </Button>
+          <div>
+            <Button 
+              disabled={activeStep === 0} 
+              onClick={handleBack} 
+              className={classes.button}>Back</Button>
             <Button
                 variant="contained"
                 color="primary"
+                className={classes.button}
                 onClick={() => {
                     activeStep === steps.length - 1
                         ? handleFinishClick()
                         : handleNext()
                 }}
-                className={classes.button}
-              >
-                {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              >{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
             </Button>
-            </div>
-            <div>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
+          </div>
+          <div>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
           </div>
         </DialogActions>
       </Dialog>

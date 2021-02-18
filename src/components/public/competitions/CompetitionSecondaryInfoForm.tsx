@@ -60,9 +60,10 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
 
     return (
       <Main>
+        <Center>
+
         <Col>
           <Row>
-            <Center>
 
              <TextField
                 id="datetime-local-start"
@@ -86,20 +87,19 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
                 shrink: true,
                 }}
             />
-            </Center>
 
           </Row>
           <Row>
             <Col>
 
-              <Center>
                 <FormLabel>Competition location</FormLabel>
                 <GooglePlacesInput/>
-              </Center>
 
             </Col>
           </Row>
         </Col>
+        </Center>
+
       </Main>
     )
 }

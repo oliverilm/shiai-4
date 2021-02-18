@@ -46,17 +46,19 @@ const useStyles = makeStyles((theme) => ({
   }));
   
 
-const CompetitionMainCard = ({competition}: Props) => {
+const CompetitionMainCard = ({competition: {name, dateRange, image, description}}: Props) => {
     const classes = useStyles();
 
-    const desc = () => competition.description.substr(0, 100)
+    const desc = () => description.substr(0, 100)
+    const lower = new Date(JSON.parse(dateRange).lower).toDateString()
+    const nameChar = name.substr(0,1)
 
     return (
       <Card className={classes.root}>
       <CardHeader
         avatar={
           <Avatar aria-label="recipe" className={classes.avatar}>
-            {competition.name.substr(0,1)}
+            {nameChar}
           </Avatar>
         }
         action={
@@ -64,12 +66,12 @@ const CompetitionMainCard = ({competition}: Props) => {
             <MoreVertIcon />
           </IconButton>
         }
-        title={competition.name}
-        subheader={new Date(JSON.parse(competition.dateRange).lower).toDateString()}
+        title={name}
+        subheader={lower}
       />
       <CardMedia
         className={classes.media}
-        image={competition.image || defaultImage}
+        image={image || defaultImage}
         title="Paella dish"
       />
       <CardContent>

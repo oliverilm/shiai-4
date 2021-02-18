@@ -8,7 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
 import styled from "styled-components"
-import { FacebookAuthButton } from './FacebookAuthButton';
+import FacebookAuthButton from './FacebookAuthButton';
 
 import { GoogleAuthButton } from './GoogleAuthButton';
 
@@ -63,7 +63,7 @@ export default function AuthModal() {
 
                 <GoogleAuthButton />
                 <FacebookAuthButton />
-                
+
               </Col>
               <Divider style={{margin: "2em 1em"}}/>
               <Col>
