@@ -24,7 +24,6 @@ import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
 import NavProfileMenu from "../private/NavProfileMenu";
 import AuthModal from "./auth/AuthModal";
 import CompetitionAddForm from "./competitions/CompetitionCreateModal";
-import MainDrawer from "./MainDrawer";
 import BottomNav from "./BottomNav";
 
 const drawerWidth = 240;
@@ -200,10 +199,10 @@ const Navbar = ({children}: any) => {
                 
         <main className={classes.content}>
             <div className={classes.toolbar} />
-            {children}
+              {children}
 
         </main>
-        <BottomNav />
+          <BottomNav />
 
       </div>   
     )
