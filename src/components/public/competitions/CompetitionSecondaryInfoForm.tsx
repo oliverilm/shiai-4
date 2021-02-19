@@ -2,6 +2,7 @@ import { Menu } from "@material-ui/core";
 import { FormControl, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
+import moment from "moment";
 import React from "react"
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import styled from "styled-components"
@@ -129,7 +130,7 @@ const CompetitionSecondaryInfoForm = ({
                 id="datetime-local-start"
                 label="Competition start"
                 type="date"
-                value={startDate}
+                value={moment(startDate).format("yyyy-MM-DD")}
                 className={classes.textField}
                 onChange={handleStartDateChange}
                 InputLabelProps={{
@@ -146,7 +147,7 @@ const CompetitionSecondaryInfoForm = ({
                 id="datetime-local-end"
                 label="Competition end"
                 type="date"
-                value={endDate}
+                value={moment(endDate).format("yyyy-MM-DD")}
                 className={classes.textField}
                 onChange={handleEndDateChange}
                 InputLabelProps={{
@@ -165,8 +166,8 @@ const CompetitionSecondaryInfoForm = ({
             <TextField
                   id="datetime-local-reg-end"
                   label="Registration end"
-                  type="datetime-local"
-                  value={registrationEnd}
+                  type="date"
+                  value={moment(registrationEnd).format("yyyy-MM-ddThh:mm:ss")}
                   className={classes.textField}
                   onChange={handleRegistrationEndChange}
                   InputLabelProps={{
@@ -199,6 +200,7 @@ const CompetitionSecondaryInfoForm = ({
                 id="outlined-adornment-amount"
                 value={amount}
                 onChange={handleAmountChange}
+                type="number"
                 startAdornment={<InputAdornment 
                   style={{
                     cursor: "pointer",

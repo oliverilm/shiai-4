@@ -14,6 +14,7 @@ import { convertToRaw, EditorState } from 'draft-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import draftToMarkdown from 'draftjs-to-markdown';
+import moment from 'moment';
 import React from 'react';
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
@@ -78,8 +79,25 @@ export default function CompetitionAddForm() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
+  const isValid = () => {
+    return (
+      name.length > 0 
+        && dateRange().lower && dateRange().upper
+        && registrationFee > 0 && registrationEnd
+    )
+  }
+
+  const dateRange = () => ({
+    bounds: "[)",
+    lower: moment(startDate).format("YYYY-MM-DD"),
+    upper: moment(endDate).format("YYYY-MM-DD")
+  });
+
   const handleFinishClick = async () => {
     // collect data and send it to the api
+    // TODO : refactor.
+    console.log(dateRange())
+    if (!isValid()) return;
     const hashConfig = {
       trigger: '#',
       separator: ' ',
@@ -89,11 +107,7 @@ export default function CompetitionAddForm() {
       image: null,
       description: draftToMarkdown(
           convertToRaw(editorState.getCurrentContent()), hashConfig),
-      dateRange: JSON.stringify({
-        bounds: "[)",
-        lower: startDate,
-        upper: endDate
-      }),
+      dateRange: JSON.stringify(dateRange()),
       location: "Tallinn",
       registrationEndDate: registrationEnd,
       registrationFee: registrationFee,
