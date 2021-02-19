@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios"
 
 import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
+import { Competition } from "../utils/interfaces";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
@@ -62,6 +63,71 @@ interface ClubCreateResponse extends MainResponse {
     created: string;
 }
 
+interface DateRange {
+    bounds: string;
+    lower: Date;
+    upper: Date;
+}
+
+interface CompetitionCreateData {
+    name: string;
+    image: null;
+    description: string;
+    dateRange: any;
+    location: string;
+    registrationEndDate: Date;
+    registrationFee: number;
+    currency: string;
+    isPublished: boolean;
+}
+
+export interface Data {
+    uuid: string;
+    name: string;
+    image?: any;
+    slug: string;
+    description: string;
+    dateRange: string;
+    location: string;
+    registrationEndDate: Date;
+    registrationFee: number;
+    currency: string;
+    priorityLevel?: any;
+    created: Date;
+    isPublished: boolean;
+    owner?: any;
+}
+
+
+export interface Headers2 {
+    Accept: string;
+    Authorization: string;
+}
+
+export interface Config {
+    url: string;
+    method: string;
+    data: string;
+    headers: Headers2;
+    baseURL: string;
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+}
+
+export interface RootObject<T> {
+    data: T;
+    status: number;
+    statusText: string;
+    config: Config;
+    request: Request;
+}
+
+
 interface ClubListResponse extends MainResponse {
     data: [];
 }
@@ -71,11 +137,11 @@ const api = {
         list: (): Promise<ClubListResponse> =>
             getRequest(apiConstants.COMPETITION_LIST),
 
-        detail: (slug: number): Promise<ClubCreateResponse> =>
+        detail: (slug: string): Promise<RootObject<Competition>> =>
             getRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
 
-        create: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>
-            postRequest(apiConstants.COMPETITION_CREATE, { data }),
+        create: (data: CompetitionCreateData): Promise<RootObject<Competition>> =>
+            postRequest(apiConstants.COMPETITION_CREATE, data ),
 
         update: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>
             patchRequest(apiConstants.COMPETITION_UPDATE, { data }),

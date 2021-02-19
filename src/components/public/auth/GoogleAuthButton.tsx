@@ -18,6 +18,7 @@ export const GoogleAuthButton = () => {
     <GoogleLogin
       clientId="762148197853-jne57s4j8cpd8cuo9h06h66p5g7u90kq.apps.googleusercontent.com"
       buttonText="LOGIN WITH GOOGLE"
+      style={{ textAlign: "center" }}
       onSuccess={googleResponse}
       onFailure={googleResponse}
     />

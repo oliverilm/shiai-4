@@ -20,3 +20,8 @@
     border-top: 1px solid #c1c1c1;
     border-radius: 4px;
 }
+
+.list-item:hover {
+    transition: all .2s;
+    background-color: #fafafa;
+}

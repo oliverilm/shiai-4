@@ -10,10 +10,11 @@ import {
 
 import api from './auth';
 import Navbar from './components/public/Navbar';
-import { AuthContext, LoadingContext,NotificationContext } from "./hooks/context"
+import { AuthContext, LoadingContext, NotificationContext } from "./hooks/context"
 import { Data, getCredentials, removeCredentials } from "./utils/index"
 import PageNotFound from './views/404page/PageNotFound';
 import Competitions from './views/competitions/Competitions';
+import Detail from './views/competitions/Detail';
 import Home from './views/home/Home';
 
 function App() {
@@ -48,13 +49,13 @@ function App() {
     setUser({})
   }
 
-  const addAlert = (message: string, variant: "success" | "error" | "warning" ) => {
-    setAlerts([...alerts, {message, variant, show: true, id: alerts.length + 1} ])
+  const addAlert = (message: string, variant: "success" | "error" | "warning") => {
+    setAlerts([...alerts, { message, variant, show: true, id: alerts.length + 1 }])
   }
 
   const renderAlerts = () => {
     return alerts.map(a => {
-      return <CustomAlert key={a.id} message={a.message} variant={a.variant} id={a.id} remove={(id: number) => {setAlerts(alerts => alerts.filter(al => al.id !== id))}} />
+      return <CustomAlert key={a.id} message={a.message} variant={a.variant} id={a.id} remove={(id: number) => { setAlerts(alerts => alerts.filter(al => al.id !== id)) }} />
     })
   }
 
@@ -66,21 +67,22 @@ function App() {
   return (
     <AuthContext.Provider value={{ isAuthenticated: isAuthenticated, user: user, login: login, logout: logout, access: null, refresh: null }}>
       <NotificationContext.Provider value={{ addAlert: addAlert }}>
-        <LoadingContext.Provider value={{isLoading: loading, setLoading: toggleLoading}}>
+        <LoadingContext.Provider value={{ isLoading: loading, setLoading: toggleLoading }}>
           <Router>
             <div className="App">
               <Navbar>
 
                 <Switch>
-                  
+
                   <Route path="/" component={Home} exact />
                   <Route path="/competitions" component={Competitions} exact />
+                  <Route path="/competitions/:slug" component={Detail} exact />
                   <Route component={PageNotFound} />
 
                 </Switch>
-                
+
               </Navbar>
-              <div style={{position: "absolute", maxWidth: "25vw", bottom: 30, right: 30}}>
+              <div style={{ position: "absolute", maxWidth: "25vw", bottom: 30, right: 30 }}>
                 {renderAlerts()}
               </div>
             </div>
@@ -112,8 +114,8 @@ const CustomAlert = ({ message, variant, id, remove }: CustomAlertProps) => {
       mounted = false
     }
   }, [id, remove])
-  
-  return  <Alert className="custom-alert" severity={variant} onClose={() => {remove(id)}} style={{marginTop: "1em", width: "25vw"}}>{message}</Alert>
+
+  return <Alert className="custom-alert" severity={variant} onClose={() => { remove(id) }} style={{ marginTop: "1em", width: "25vw" }}>{message}</Alert>
 }
 
 
