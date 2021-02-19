@@ -36,7 +36,7 @@ export default function MainList({ competitions }: Props) {
     return competitions.map(comp => {
       return (
         <div key={comp.uuid}>
-          <ListItem className={"list-item"} alignItems="flex-start" component={Link} to={`/${comp.slug}`}>
+          <ListItem className={"list-item"} alignItems="flex-start" component={Link} to={`/competitions/${comp.slug}`}>
             <ListItemAvatar>
               <Avatar alt={comp.name} src={comp.image} >{comp.name.substr(0,1).toUpperCase()}</Avatar>
             </ListItemAvatar>

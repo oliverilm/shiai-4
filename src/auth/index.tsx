@@ -119,8 +119,8 @@ export interface Config {
     maxBodyLength: number;
 }
 
-export interface RootObject {
-    data: any;
+export interface RootObject<T> {
+    data: T;
     status: number;
     statusText: string;
     config: Config;
@@ -137,10 +137,10 @@ const api = {
         list: (): Promise<ClubListResponse> =>
             getRequest(apiConstants.COMPETITION_LIST),
 
-        detail: (slug: number): Promise<ClubCreateResponse> =>
+        detail: (slug: string): Promise<RootObject<Competition>> =>
             getRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
 
-        create: (data: CompetitionCreateData): Promise<RootObject> =>
+        create: (data: CompetitionCreateData): Promise<RootObject<Competition>> =>
             postRequest(apiConstants.COMPETITION_CREATE, data ),
 
         update: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>

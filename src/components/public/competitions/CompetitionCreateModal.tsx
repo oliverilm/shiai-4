@@ -95,7 +95,6 @@ export default function CompetitionAddForm() {
   const handleFinishClick = async () => {
     // collect data and send it to the api
     // TODO : refactor.
-    console.log(dateRange())
     if (!isValid()) return;
     const hashConfig = {
       trigger: '#',
@@ -116,7 +115,9 @@ export default function CompetitionAddForm() {
     }
     const response = await api.competitions.create(data)
     if (response.status === 201) {
-      history.push("/")
+      history.push(`/competitions/${response.data.slug}`)
+    } else {
+      // TODO: throw error.
     }
     setActiveStep(0)
     handleClose()
