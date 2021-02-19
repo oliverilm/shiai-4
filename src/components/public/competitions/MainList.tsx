@@ -16,7 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      backgroundColor: theme.palette.background.paper,
+      maxWidth: "1000px",
+      backgroundColor: "transparent"//theme.palette.background.paper,
     },
     inline: {
       display: 'inline',
@@ -37,9 +38,10 @@ export default function MainList({ competitions }: Props) {
         <>
           <ListItem key={comp.slug} className={"list-item"} alignItems="flex-start" component={Link} to={`/${comp.slug}`}>
             <ListItemAvatar>
-              <Avatar alt={comp.name.toUpperCase()} src={comp.image} />
+              <Avatar alt={comp.name} src={comp.image} >{comp.name.substr(0,1).toUpperCase()}</Avatar>
             </ListItemAvatar>
             <ListItemText
+              style={{color: "black"}}
               primary={comp.name}
               secondary={
                 <React.Fragment>

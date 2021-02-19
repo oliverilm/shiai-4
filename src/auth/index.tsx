@@ -1,6 +1,7 @@
 import axios, { AxiosRequestConfig } from "axios"
 
 import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
+import { Competition } from "../utils/interfaces";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
@@ -62,6 +63,24 @@ interface ClubCreateResponse extends MainResponse {
     created: string;
 }
 
+interface DateRange {
+    bounds: string;
+    lower: Date;
+    upper: Date;
+}
+
+interface CompetitionCreateData {
+    name: string;
+    image: null;
+    description: string;
+    dateRange: DateRange;
+    location: string;
+    registrationEndDate: Date;
+    registrationFee: number;
+    currency: string;
+    isPublished: boolean;
+}
+
 interface ClubListResponse extends MainResponse {
     data: [];
 }
@@ -74,7 +93,7 @@ const api = {
         detail: (slug: number): Promise<ClubCreateResponse> =>
             getRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
 
-        create: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>
+        create: (data: CompetitionCreateData): Promise<Competition> =>
             postRequest(apiConstants.COMPETITION_CREATE, { data }),
 
         update: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>

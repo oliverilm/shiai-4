@@ -1,22 +1,28 @@
-import React from 'react';
+import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
+import Stepper from '@material-ui/core/Stepper';
+import { createStyles,makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import PrivateComponent from '../../private/PrivateComponent';
-import { EditorState } from 'draft-js';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
+import { convertToRaw, EditorState } from 'draft-js';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import draftToMarkdown from 'draftjs-to-markdown';
+import React from 'react';
 import { useState } from 'react';
+import styled from "styled-components"
+
+import api from '../../../auth';
+import PrivateComponent from '../../private/PrivateComponent';
 import CompetitionMainInformationForm from './CompetitionMainInformationForm';
 import CompetitionSecondaryInfoForm from './CompetitionSecondaryInfoForm';
-import AddCircleIcon from '@material-ui/icons/AddCircle';
-import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import styled from "styled-components"
+
 
 const MarginDiv = styled.div`
   margin-bottom: 2em;
@@ -45,6 +51,8 @@ export default function CompetitionAddForm() {
   const [open, setOpen] = React.useState(false);
   const [editorState, setEditorState] = React.useState<EditorState>(EditorState.createEmpty())
   const [name, setName] = useState<string>("")
+  const [registrationFee, setRegistrationFee] = useState<number>(0)
+  const [currency, setCurrency] = useState<string>("€")
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -68,6 +76,30 @@ export default function CompetitionAddForm() {
   };
 
   const handleFinishClick = () => {
+    // collect data and send it to the api
+    const hashConfig = {
+      trigger: '#',
+      separator: ' ',
+    }
+    const data = {
+      name,
+      image: null,
+      description: draftToMarkdown(
+          convertToRaw(editorState.getCurrentContent()), hashConfig),
+      dateRange: {
+        bounds: "[)",
+        lower: startDate,
+        upper: endDate
+      },
+      location: null,
+      registrationEndDate: null,
+      registrationFee: null,
+      currency: null,
+      isPublished: null,
+
+    }
+    console.log(data)
+    // api.competitions.create(data)
     setActiveStep(0)
     handleClose()
   }
@@ -83,7 +115,16 @@ export default function CompetitionAddForm() {
                   setEditorState={setEditorState}
           />
       case 1:
-        return <CompetitionSecondaryInfoForm endDate={endDate} startDate={startDate} setEndDate={setEndDate} setStartDate={setStartDate} />;
+        return <CompetitionSecondaryInfoForm 
+                  endDate={endDate} 
+                  startDate={startDate} 
+                  setEndDate={setEndDate} 
+                  setStartDate={setStartDate} 
+                  setAmount={setRegistrationFee}
+                  currency={currency}
+                  setCurrency={setCurrency}
+                  amount={registrationFee}/>;
+
       case 2:
         return 'This is the bit I really care about!';
       default:
@@ -144,7 +185,7 @@ export default function CompetitionAddForm() {
                         ? handleFinishClick()
                         : handleNext()
                 }}
-              >{activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+              >{activeStep === steps.length - 1 ? 'Submit competition' : 'Next'}
             </Button>
           </div>
           <div>

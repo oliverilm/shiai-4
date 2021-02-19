@@ -1,9 +1,10 @@
 import "./index.scss"
-import { Editor } from "react-draft-wysiwyg";
-import { EditorState } from 'draft-js';
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+import { FormLabel,TextField } from "@material-ui/core";
+import { EditorState } from 'draft-js';
 import React from 'react';
-import { TextField, FormLabel } from "@material-ui/core";
+import { Editor } from "react-draft-wysiwyg";
 import styled from "styled-components"
 
 const Root = styled.div`

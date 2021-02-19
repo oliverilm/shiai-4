@@ -1,57 +1,28 @@
 import "./public.scss"
 
-import {AppBar,
-    CssBaseline,
+import {
     Divider,
     Drawer,
     IconButton,
     List,
     ListItem,
     ListItemIcon,
-    ListItemText,
-    Toolbar,
-    Typography  } from "@material-ui/core"
+    ListItemText  } from "@material-ui/core"
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React, { useContext } from 'react'
 import { Link } from "react-router-dom";
 
 import { AuthContext } from '../../hooks/context';
 import {drawerRoutes, RouteObjectInterface} from "../../utils/routes"
-import NavProfileMenu from "../private/NavProfileMenu";
-import AuthModal from "./auth/AuthModal";
 import CompetitionAddForm from "./competitions/CompetitionCreateModal";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    display: 'flex',
-  },
-  appBar: {
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  menuButton: {
-    marginRight: 36,
-  },
-  hide: {
-    display: 'none',
-  },
+  
   drawer: {
     width: drawerWidth,
     flexShrink: 0,
@@ -83,33 +54,20 @@ const useStyles = makeStyles((theme) => ({
     // necessary for content to be below app bar
     ...theme.mixins.toolbar,
   },
-  content: {
-    flexGrow: 1,
-    padding: theme.spacing(3),
-  },
 }));
 
+interface Props {
+  open: boolean;
+  handleDrawerClose: any;
+}
 
 
-const MainDrawer = ({children}: any) => {
+const MainDrawer = ({open, handleDrawerClose}: Props) => {
     const auth = useContext(AuthContext)
 
     const classes = useStyles();
     const theme = useTheme();
-    const [open, setOpen] = React.useState<boolean>(false);
   
-    const handleDrawerOpen = () => {
-      setOpen(true);
-    };
-
-    const handleDrawerClose = () => {
-        setOpen(false);
-      };
- 
-    const logout = () => {
-        auth.logout()
-    }
-
     const filterPrivateRoutes = (route: RouteObjectInterface) => {
       const isLoggedIn = auth.isAuthenticated
       if (isLoggedIn) return true;
@@ -143,36 +101,9 @@ const MainDrawer = ({children}: any) => {
     }
 
     return (
-        <div className={classes.root}>
-
-        <CssBaseline />
-        <AppBar
-          position="fixed"
-          className={clsx(classes.appBar, {
-            [classes.appBarShift]: open,
-          })}
-        >
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              className={clsx(classes.menuButton, {
-                [classes.hide]: open,
-              })}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography variant="h6" noWrap component={Link} to={"/"} style={{flexGrow: 1, textDecoration: "none", color: "white"}}>
-              Shiai.eu
-            </Typography>
-                  {auth.isAuthenticated 
-                    ? <NavProfileMenu logout={logout}/>
-                    : <AuthModal /> }
-          </Toolbar>
-        </AppBar>
+        
         <Drawer
+          id="drawer"
           variant="permanent"
           className={clsx(classes.drawer, {
             [classes.drawerOpen]: open,
@@ -194,11 +125,6 @@ const MainDrawer = ({children}: any) => {
               {renderRoutes()}
               <CompetitionAddForm />
         </Drawer>
-        <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {children}
-        </main>
-      </div>   
     )
 }
 
