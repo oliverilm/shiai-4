@@ -73,13 +73,60 @@ interface CompetitionCreateData {
     name: string;
     image: null;
     description: string;
-    dateRange: DateRange;
+    dateRange: string;
     location: string;
     registrationEndDate: Date;
     registrationFee: number;
     currency: string;
     isPublished: boolean;
 }
+
+export interface Data {
+    uuid: string;
+    name: string;
+    image?: any;
+    slug: string;
+    description: string;
+    dateRange: string;
+    location: string;
+    registrationEndDate: Date;
+    registrationFee: number;
+    currency: string;
+    priorityLevel?: any;
+    created: Date;
+    isPublished: boolean;
+    owner?: any;
+}
+
+
+export interface Headers2 {
+    Accept: string;
+    Authorization: string;
+}
+
+export interface Config {
+    url: string;
+    method: string;
+    data: string;
+    headers: Headers2;
+    baseURL: string;
+    transformRequest: any[];
+    transformResponse: any[];
+    timeout: number;
+    xsrfCookieName: string;
+    xsrfHeaderName: string;
+    maxContentLength: number;
+    maxBodyLength: number;
+}
+
+export interface RootObject {
+    data: any;
+    status: number;
+    statusText: string;
+    config: Config;
+    request: Request;
+}
+
 
 interface ClubListResponse extends MainResponse {
     data: [];
@@ -93,8 +140,8 @@ const api = {
         detail: (slug: number): Promise<ClubCreateResponse> =>
             getRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
 
-        create: (data: CompetitionCreateData): Promise<Competition> =>
-            postRequest(apiConstants.COMPETITION_CREATE, { data }),
+        create: (data: CompetitionCreateData): Promise<RootObject> =>
+            postRequest(apiConstants.COMPETITION_CREATE, data ),
 
         update: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>
             patchRequest(apiConstants.COMPETITION_UPDATE, { data }),

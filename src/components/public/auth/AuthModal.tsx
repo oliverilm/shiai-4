@@ -4,12 +4,11 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from 'react';
 import styled from "styled-components"
-import FacebookAuthButton from './FacebookAuthButton';
 
+import FacebookAuthButton from './FacebookAuthButton';
 import { GoogleAuthButton } from './GoogleAuthButton';
 
 const Col = styled.div`
@@ -18,18 +17,8 @@ const Col = styled.div`
   flex-direction: column;
 `
 
-const useStyles = makeStyles((theme) => ({
-    formRoot: {
-      '& > *': {
-        margin: theme.spacing(1),
-        width: '25ch',
-      },
-    },
-  }));
-
 export default function AuthModal() {
   const [open, setOpen] = React.useState(false);
-  const classes = useStyles()
 
   const handleClickOpen = () => {
     setOpen(true);

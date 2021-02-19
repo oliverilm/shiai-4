@@ -16,6 +16,7 @@ import { convertToRaw, EditorState } from 'draft-js';
 import draftToMarkdown from 'draftjs-to-markdown';
 import React from 'react';
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import styled from "styled-components"
 
 import api from '../../../auth';
@@ -52,7 +53,9 @@ export default function CompetitionAddForm() {
   const [editorState, setEditorState] = React.useState<EditorState>(EditorState.createEmpty())
   const [name, setName] = useState<string>("")
   const [registrationFee, setRegistrationFee] = useState<number>(0)
+  const [registrationEnd, setRegistrationEnd] = useState<Date>(new Date())
   const [currency, setCurrency] = useState<string>("€")
+  const history = useHistory()
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -75,7 +78,7 @@ export default function CompetitionAddForm() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleFinishClick = () => {
+  const handleFinishClick = async () => {
     // collect data and send it to the api
     const hashConfig = {
       trigger: '#',
@@ -86,20 +89,22 @@ export default function CompetitionAddForm() {
       image: null,
       description: draftToMarkdown(
           convertToRaw(editorState.getCurrentContent()), hashConfig),
-      dateRange: {
+      dateRange: JSON.stringify({
         bounds: "[)",
         lower: startDate,
         upper: endDate
-      },
-      location: null,
-      registrationEndDate: null,
-      registrationFee: null,
-      currency: null,
-      isPublished: null,
+      }),
+      location: "Tallinn",
+      registrationEndDate: registrationEnd,
+      registrationFee: registrationFee,
+      currency: currency,
+      isPublished: false,
 
     }
-    console.log(data)
-    // api.competitions.create(data)
+    const response = await api.competitions.create(data)
+    if (response.status === 201) {
+      history.push("/")
+    }
     setActiveStep(0)
     handleClose()
   }
@@ -122,6 +127,8 @@ export default function CompetitionAddForm() {
                   setStartDate={setStartDate} 
                   setAmount={setRegistrationFee}
                   currency={currency}
+                  registrationEnd={registrationEnd}
+                  setRegistrationEnd={setRegistrationEnd}
                   setCurrency={setCurrency}
                   amount={registrationFee}/>;
 

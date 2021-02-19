@@ -1,4 +1,5 @@
-import { FormControl, FormLabel, InputAdornment, InputLabel, OutlinedInput } from "@material-ui/core";
+import { Menu } from "@material-ui/core";
+import { FormControl, FormLabel, InputAdornment, InputLabel, MenuItem, OutlinedInput } from "@material-ui/core";
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import React from "react"
@@ -9,6 +10,7 @@ const Row = styled.div`
   display: flex;
   flex-direction:row;
   width: 100%;
+  margin-top: 1em;
 `;
 
 const Col = styled.div`
@@ -53,10 +55,23 @@ interface Props {
     setAmount: Function;
     currency: string;
     setCurrency: Function;
+    registrationEnd: Date;
+    setRegistrationEnd: Function;
 }
 
-const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endDate, amount, setAmount, currency, setCurrency}: Props) => {
+const CompetitionSecondaryInfoForm = ({
+  setStartDate, 
+  startDate, 
+  setEndDate, 
+  endDate, 
+  amount, 
+  setAmount, 
+  registrationEnd,
+  setRegistrationEnd,
+  currency, 
+  setCurrency}: Props) => {
     const classes = useStyles();
+    const [anchor, setAnchor] = React.useState<Element | null>(null)
 
     const handleStartDateChange = (e: any | null) => {
         setStartDate(e.target.value);
@@ -71,9 +86,41 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
       setAmount(e.target.value)
     }
 
+    const handleRegistrationEndChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+      setRegistrationEnd(e.target.value)
+    }
+
+    const handleOpen = (e: React.MouseEvent<HTMLElement>) => {
+      setAnchor(e.currentTarget)
+    }
+
+    const handleClose =() => {
+      setAnchor(null)
+    }
+
     return (
       <Main>
         <Center>
+        <Menu
+            id="simple-menu"
+            anchorEl={anchor}
+            keepMounted
+            open={Boolean(anchor)}
+            onClose={handleClose}
+          >
+            <MenuItem onClick={() => {
+              setCurrency("€")
+              handleClose()
+            }}>€ - eur</MenuItem>
+            <MenuItem onClick={() => {
+              setCurrency("$")
+              handleClose()
+            }}>$ - dollar</MenuItem>
+            <MenuItem onClick={() => {
+              setCurrency("£")
+              handleClose()
+            }}>£ - pound</MenuItem>
+          </Menu>
 
         <Col>
           <Row style={{ justifyContent: "space-between"}}>
@@ -81,8 +128,8 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
              <TextField
                 id="datetime-local-start"
                 label="Competition start"
-                type="datetime-local"
-                defaultValue={startDate}
+                type="date"
+                value={startDate}
                 className={classes.textField}
                 onChange={handleStartDateChange}
                 InputLabelProps={{
@@ -98,8 +145,8 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
             <TextField
                 id="datetime-local-end"
                 label="Competition end"
-                type="datetime-local"
-                defaultValue={endDate}
+                type="date"
+                value={endDate}
                 className={classes.textField}
                 onChange={handleEndDateChange}
                 InputLabelProps={{
@@ -115,12 +162,33 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
 
           </Row>
           <Row>
-            <Col style={{paddingTop: "1em"}}>
+            <TextField
+                  id="datetime-local-reg-end"
+                  label="Registration end"
+                  type="datetime-local"
+                  value={registrationEnd}
+                  className={classes.textField}
+                  onChange={handleRegistrationEndChange}
+                  InputLabelProps={{
+                    shrink: true,
+                  }}
+                  InputProps={{
+                    inputProps: { 
+                      max: startDate 
+                    }
+                  }}
+
+              />
+          </Row>
+          <Row>
+            <Col>
 
                 <FormLabel style={{marginBottom: ".2em"}}>Competition location</FormLabel>
-                <GooglePlacesAutocomplete
-                  apiKey="AIzaSyBRaksqElnSQ7FwfhsPjkkxc8FFA8qGUuM"
-                />
+                <div style={{ zIndex: 100}}>
+                  <GooglePlacesAutocomplete
+                    apiKey="AIzaSyBRaksqElnSQ7FwfhsPjkkxc8FFA8qGUuM"
+                  />
+                </div>
             </Col>
           </Row>
           <Row>
@@ -131,7 +199,13 @@ const CompetitionSecondaryInfoForm = ({setStartDate, startDate, setEndDate, endD
                 id="outlined-adornment-amount"
                 value={amount}
                 onChange={handleAmountChange}
-                startAdornment={<InputAdornment position="start">€</InputAdornment>}
+                startAdornment={<InputAdornment 
+                  style={{
+                    cursor: "pointer",
+                    padding: "0 5px"
+                  }}
+                  position="start" 
+                  onClick={handleOpen}>{currency}</InputAdornment>}
                 labelWidth={60}
               />
             </FormControl>

@@ -30,8 +30,7 @@ const CompetitionMainInformationForm = ({editorState, setEditorState, name, setN
           value={name}
           onChange={e => {setName(e.target.value)}}
           id="standard-required" 
-          label="Competition Name" 
-          defaultValue="My competition" />
+          label="Competition Name"  />
 
         <MarginTop>
           <FormLabel> Competition Description</FormLabel>
