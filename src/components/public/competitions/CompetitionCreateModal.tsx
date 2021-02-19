@@ -88,7 +88,6 @@ export default function CompetitionAddForm() {
   }
 
   const dateRange = () => ({
-    bounds: "[)",
     lower: moment(startDate).format("YYYY-MM-DD"),
     upper: moment(endDate).format("YYYY-MM-DD")
   });
@@ -107,7 +106,7 @@ export default function CompetitionAddForm() {
       image: null,
       description: draftToMarkdown(
           convertToRaw(editorState.getCurrentContent()), hashConfig),
-      dateRange: JSON.stringify(dateRange()),
+      dateRange: `{"lower": "${dateRange().lower}", "upper": "${dateRange().upper}"}`,
       location: "Tallinn",
       registrationEndDate: registrationEnd,
       registrationFee: registrationFee,

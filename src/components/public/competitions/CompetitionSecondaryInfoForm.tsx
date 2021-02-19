@@ -166,8 +166,8 @@ const CompetitionSecondaryInfoForm = ({
             <TextField
                   id="datetime-local-reg-end"
                   label="Registration end"
-                  type="date"
-                  value={moment(registrationEnd).format("yyyy-MM-ddThh:mm:ss")}
+                  type="datetime-local"
+                  value={registrationEnd}
                   className={classes.textField}
                   onChange={handleRegistrationEndChange}
                   InputLabelProps={{
@@ -193,27 +193,27 @@ const CompetitionSecondaryInfoForm = ({
             </Col>
           </Row>
           <Row>
-          <Col>
-            <FormControl fullWidth className={classes.margin} variant="outlined">
-              <InputLabel htmlFor="outlined-adornment-amount">Reg. fee</InputLabel>
-              <OutlinedInput
-                id="outlined-adornment-amount"
-                value={amount}
-                onChange={handleAmountChange}
-                type="number"
-                startAdornment={<InputAdornment 
-                  style={{
-                    cursor: "pointer",
-                    padding: "0 5px"
-                  }}
-                  position="start" 
-                  onClick={handleOpen}>{currency}</InputAdornment>}
-                labelWidth={60}
-              />
-            </FormControl>
-            </Col>
-          </Row>
-        </Col>
+            <Col>
+              <FormControl fullWidth className={classes.margin} variant="outlined">
+                <InputLabel htmlFor="outlined-adornment-amount">Reg. fee</InputLabel>
+                <OutlinedInput
+                  id="outlined-adornment-amount"
+                  value={amount}
+                  onChange={handleAmountChange}
+                  type="number"
+                  startAdornment={<InputAdornment 
+                    style={{
+                      cursor: "pointer",
+                      padding: "0 5px"
+                    }}
+                    position="start" 
+                    onClick={handleOpen}>{currency}</InputAdornment>}
+                  labelWidth={60}
+                />
+              </FormControl>
+              </Col>
+            </Row>
+          </Col>
         </Center>
 
       </Main>

@@ -73,7 +73,7 @@ interface CompetitionCreateData {
     name: string;
     image: null;
     description: string;
-    dateRange: string;
+    dateRange: any;
     location: string;
     registrationEndDate: Date;
     registrationFee: number;
