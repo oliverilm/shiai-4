@@ -11,6 +11,7 @@ export interface Competition {
     currency: string;
     priorityLevel: string;
     uuid: string;
+    isOwner: boolean;
     isPublished: boolean;
     created: string;
 }

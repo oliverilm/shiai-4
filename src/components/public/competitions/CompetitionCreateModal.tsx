@@ -7,10 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
 import Stepper from '@material-ui/core/Stepper';
-import { createStyles,makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 import { convertToRaw, EditorState } from 'draft-js';
+// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+// @ts-ignore
+import draftToHtml from 'draftjs-to-html';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import draftToMarkdown from 'draftjs-to-markdown';
@@ -81,9 +84,9 @@ export default function CompetitionAddForm() {
 
   const isValid = () => {
     return (
-      name.length > 0 
-        && dateRange().lower && dateRange().upper
-        && registrationFee > 0 && registrationEnd
+      name.length > 0
+      && dateRange().lower && dateRange().upper
+      && registrationFee > 0 && registrationEnd
     )
   }
 
@@ -103,8 +106,8 @@ export default function CompetitionAddForm() {
     const data = {
       name,
       image: null,
-      description: draftToMarkdown(
-          convertToRaw(editorState.getCurrentContent()), hashConfig),
+      description: draftToHtml(
+        convertToRaw(editorState.getCurrentContent()), hashConfig),
       dateRange: `{"lower": "${dateRange().lower}", "upper": "${dateRange().upper}"}`,
       location: "Tallinn",
       registrationEndDate: registrationEnd,
@@ -127,24 +130,24 @@ export default function CompetitionAddForm() {
   function getStepContent(step: number) {
     switch (step) {
       case 0:
-        return <CompetitionMainInformationForm 
-                  name={name}
-                  setName={setName}
-                  editorState={editorState}
-                  setEditorState={setEditorState}
-          />
+        return <CompetitionMainInformationForm
+          name={name}
+          setName={setName}
+          editorState={editorState}
+          setEditorState={setEditorState}
+        />
       case 1:
-        return <CompetitionSecondaryInfoForm 
-                  endDate={endDate} 
-                  startDate={startDate} 
-                  setEndDate={setEndDate} 
-                  setStartDate={setStartDate} 
-                  setAmount={setRegistrationFee}
-                  currency={currency}
-                  registrationEnd={registrationEnd}
-                  setRegistrationEnd={setRegistrationEnd}
-                  setCurrency={setCurrency}
-                  amount={registrationFee}/>;
+        return <CompetitionSecondaryInfoForm
+          endDate={endDate}
+          startDate={startDate}
+          setEndDate={setEndDate}
+          setStartDate={setStartDate}
+          setAmount={setRegistrationFee}
+          currency={currency}
+          registrationEnd={registrationEnd}
+          setRegistrationEnd={setRegistrationEnd}
+          setCurrency={setCurrency}
+          amount={registrationFee} />;
 
       case 2:
         return 'This is the bit I really care about!';
@@ -155,67 +158,67 @@ export default function CompetitionAddForm() {
   return (
     <>
       <PrivateComponent>
-        <ListItem onClick={handleClickOpen} style={{cursor: "pointer"}} >
-            <ListItemIcon><AddCircleIcon /></ListItemIcon>
-            <ListItemText primary={"Add Competition"}/>
+        <ListItem onClick={handleClickOpen} style={{ cursor: "pointer" }} >
+          <ListItemIcon><AddCircleIcon /></ListItemIcon>
+          <ListItemText primary={"Add Competition"} />
         </ListItem>
 
-      <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">
-          <Stepper activeStep={activeStep}>
+        <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title">
+          <DialogTitle id="form-dialog-title">
+            <Stepper activeStep={activeStep}>
               {steps.map((label) => {
-                  const stepProps: { completed?: boolean } = {};
-                  const labelProps: { optional?: React.ReactNode } = {};
-                  return (
-                      <Step key={label} {...stepProps}>
-                        <StepLabel {...labelProps}>{label}</StepLabel>
-                      </Step>
-                  );
+                const stepProps: { completed?: boolean } = {};
+                const labelProps: { optional?: React.ReactNode } = {};
+                return (
+                  <Step key={label} {...stepProps}>
+                    <StepLabel {...labelProps}>{label}</StepLabel>
+                  </Step>
+                );
               })}
-          </Stepper>
-        </DialogTitle>
-        <DialogContent>
-        {activeStep === steps.length ? (
-          <div>
-            <Typography className={classes.instructions}>
-              All steps completed - you&apos;re finished
+            </Stepper>
+          </DialogTitle>
+          <DialogContent>
+            {activeStep === steps.length ? (
+              <div>
+                <Typography className={classes.instructions}>
+                  All steps completed - you&apos;re finished
             </Typography>
-          </div>
-        ) : (
-          <MarginDiv>
-            <div className={classes.instructions}>{getStepContent(activeStep)}</div>
-          </MarginDiv>
-        )}
-        </DialogContent>
-        <DialogActions style={{
+              </div>
+            ) : (
+                <MarginDiv>
+                  <div className={classes.instructions}>{getStepContent(activeStep)}</div>
+                </MarginDiv>
+              )}
+          </DialogContent>
+          <DialogActions style={{
             display: "flex",
             flexDirection: "row",
             justifyContent: "space-between"
-        }}>
-          <div>
-            <Button 
-              disabled={activeStep === 0} 
-              onClick={handleBack} 
-              className={classes.button}>Back</Button>
-            <Button
+          }}>
+            <div>
+              <Button
+                disabled={activeStep === 0}
+                onClick={handleBack}
+                className={classes.button}>Back</Button>
+              <Button
                 variant="contained"
                 color="primary"
                 className={classes.button}
                 onClick={() => {
-                    activeStep === steps.length - 1
-                        ? handleFinishClick()
-                        : handleNext()
+                  activeStep === steps.length - 1
+                    ? handleFinishClick()
+                    : handleNext()
                 }}
               >{activeStep === steps.length - 1 ? 'Submit competition' : 'Next'}
+              </Button>
+            </div>
+            <div>
+              <Button onClick={handleClose} color="primary">
+                Cancel
             </Button>
-          </div>
-          <div>
-            <Button onClick={handleClose} color="primary">
-              Cancel
-            </Button>
-          </div>
-        </DialogActions>
-      </Dialog>
+            </div>
+          </DialogActions>
+        </Dialog>
       </PrivateComponent>
 
     </>
