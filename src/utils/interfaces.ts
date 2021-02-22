@@ -18,24 +18,21 @@ export interface Competition {
 
 export interface Category {
     id: number;
-    sex: string;
     underValue: string;
     value: string;
     created: Date;
 }
 
-export interface WeightCategory {
-    id: string;
-    category: Category;
-    weight: string;
+export interface CategoryInCompetition {
+    menWeights: string;
+    womenWeights: string;
+    unisexWeights: string;
     identifier: string;
     amountOverAllowed: string;
-    created: Date;
-}
-
-export interface CategoryInCompetition {
-    competition: string;
-    weightCategory: WeightCategory;
+    startingYear: string;
+    endingYear: string;
+    competition: Competition;
+    category: Category;
     rules: string;
-    created: Date;
+    created: string;
 }

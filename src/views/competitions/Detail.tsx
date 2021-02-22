@@ -1,4 +1,4 @@
-import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Button, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 import { Backdrop, CircularProgress, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
@@ -100,29 +100,34 @@ const Detail = ({ match }: MatchProps) => {
     const renderClasses = () => {
         if (weightClasses && weightClasses.length > 0) {
             return weightClasses.map(cl => {
-                const { rules, competition, created,
-                    weightCategory: { identifier, weight, amountOverAllowed, category: {
-                        sex, underValue, value, id: categoryId
-                    }, id: weightCategoryId } } = cl
+                const { menWeights, womenWeights, unisexWeights, amountOverAllowed, identifier, startingYear, endingYear, rules, category: {value}} = cl
                 return (
                     <>
-                        <TableRow>
-                            <TableCell>{value}</TableCell>
-                            <TableCell align="right"> rules</TableCell>
+                        <TableRow style={{backgroundColor: "#3f51b5", color: "#fff"}}>
+                            <TableCell style={{color: "#fff"}}>{value} {startingYear} - {endingYear}</TableCell>
+                            <TableCell style={{color: "#fff"}} align="right">Rules: {rules}</TableCell>
                         </TableRow>
-                        <TableRow>
-                            <TableCell>men</TableCell>
-                            <TableCell align="right">men weights</TableCell>
-                        </TableRow>
-                        <TableRow>
-                            <TableCell>women</TableCell>
-                            <TableCell align="right">women weights</TableCell>
-                        </TableRow>
+                        { menWeights.length > 0 ? (
+                             <TableRow>
+                                <TableCell>M</TableCell>
+                                <TableCell align="right">{menWeights}</TableCell>
+                            </TableRow>
+                        ) : <></>}
+                         { womenWeights.length > 0 ? (
+                             <TableRow>
+                                <TableCell>W</TableCell>
+                                <TableCell align="right">{womenWeights}</TableCell>
+                            </TableRow>
+                        ) : <></>}
+                         { unisexWeights.length > 0 ? (
+                             <TableRow>
+                                <TableCell>U</TableCell>
+                                <TableCell align="right">{unisexWeights}</TableCell>
+                            </TableRow>
+                        ) : <></>}
                     </>
                 )
             })
-        } else {
-            return []
         }
     }
 
@@ -136,10 +141,12 @@ const Detail = ({ match }: MatchProps) => {
                             {competition.isOwner && <EditIcon style={{ color: "#c1c1c1", cursor: "pointer", fontSize: "40px" }} />}
                         </CenterCenter>
                     </Row>
-                    <div dangerouslySetInnerHTML={{ __html: competition.description }} />
+                    
                     <Row>
+                        <Center>
                         <Col>
 
+                            <div dangerouslySetInnerHTML={{ __html: competition.description }} />
                             <Table aria-label="simple table">
                                 <TableBody>
                                     <TableRow>
@@ -166,9 +173,15 @@ const Detail = ({ match }: MatchProps) => {
                             <Table aria-label="simple table">
                                 <TableBody>
                                     {renderClasses()}
+                                    {competition.isOwner ? (
+                                         <TableRow>
+                                            <TableCell colSpan={2}><Button variant="outlined">Add new category</Button></TableCell>
+                                        </TableRow>
+                                    ) : <></>}
                                 </TableBody>
                             </Table>
                         </Col>
+                        </Center>
                     </Row>
 
 
