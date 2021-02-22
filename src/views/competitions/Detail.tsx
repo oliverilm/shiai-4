@@ -8,8 +8,9 @@ import { BrowserRouter as Router, Route, RouteComponentProps } from 'react-route
 import styled from "styled-components"
 
 import api from '../../auth';
+import GooglePlacesInput from '../../components/public/inputs/GooglePlacesInput';
 import { AuthContext } from '../../hooks/context';
-import { Competition } from '../../utils/interfaces';
+import { CategoryInCompetition, Competition } from '../../utils/interfaces';
 
 
 const CenterCenter = styled.div`
@@ -55,6 +56,7 @@ const Detail = ({ match }: MatchProps) => {
     const [competition, setCompetition] = useState<Competition | null>(null)
     const [noCompetition, setNoCompetition] = useState<null | false>(null)
     const [loading, setLoading] = useState(true)
+    const [weightClasses, setweightClasses] = useState<CategoryInCompetition[] | null>(null)
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
@@ -77,6 +79,9 @@ const Detail = ({ match }: MatchProps) => {
                 setNoCompetition(false)
                 setLoading(false)
             })
+            api.competitions.categories(match.params.slug).then(res => {
+                setweightClasses(res.data)
+            })
         }
         return () => {
             mounted = false;
@@ -90,6 +95,35 @@ const Detail = ({ match }: MatchProps) => {
                 Sorry, this competition was not found
             </Typography>
         </CenterCenter>)
+    }
+
+    const renderClasses = () => {
+        if (weightClasses && weightClasses.length > 0) {
+            return weightClasses.map(cl => {
+                const { rules, competition, created,
+                    weightCategory: { identifier, weight, amountOverAllowed, category: {
+                        sex, underValue, value, id: categoryId
+                    }, id: weightCategoryId } } = cl
+                return (
+                    <>
+                        <TableRow>
+                            <TableCell>{value}</TableCell>
+                            <TableCell align="right"> rules</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>men</TableCell>
+                            <TableCell align="right">men weights</TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>women</TableCell>
+                            <TableCell align="right">women weights</TableCell>
+                        </TableRow>
+                    </>
+                )
+            })
+        } else {
+            return []
+        }
     }
 
     return (
@@ -128,7 +162,13 @@ const Detail = ({ match }: MatchProps) => {
                             </Table>
 
                         </Col>
-                        <Col></Col>
+                        <Col>
+                            <Table aria-label="simple table">
+                                <TableBody>
+                                    {renderClasses()}
+                                </TableBody>
+                            </Table>
+                        </Col>
                     </Row>
 
 

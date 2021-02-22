@@ -141,13 +141,14 @@ const api = {
             getRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
 
         create: (data: CompetitionCreateData): Promise<RootObject<Competition>> =>
-            postRequest(apiConstants.COMPETITION_CREATE, data ),
+            postRequest(apiConstants.COMPETITION_CREATE, data),
 
         update: (data: ClubCreateInterface): Promise<ClubCreateResponse> =>
             patchRequest(apiConstants.COMPETITION_UPDATE, { data }),
 
         delete: (slug: string): Promise<any> =>
             deleteRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
+        categories: (slug: string): Promise<RootObject<any>> => getRequest(`${apiConstants.COMPETITION_CATEGORIES}/${slug}`)
     },
     // club: {
     //     list: () => {},

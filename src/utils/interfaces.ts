@@ -15,3 +15,27 @@ export interface Competition {
     isPublished: boolean;
     created: string;
 }
+
+export interface Category {
+    id: number;
+    sex: string;
+    underValue: string;
+    value: string;
+    created: Date;
+}
+
+export interface WeightCategory {
+    id: string;
+    category: Category;
+    weight: string;
+    identifier: string;
+    amountOverAllowed: string;
+    created: Date;
+}
+
+export interface CategoryInCompetition {
+    competition: string;
+    weightCategory: WeightCategory;
+    rules: string;
+    created: Date;
+}
