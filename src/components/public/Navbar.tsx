@@ -113,7 +113,7 @@ const Navbar = ({ children }: any) => {
 
       <MainDrawer open={open} handleDrawerClose={handleDrawerClose}/>
       <BottomNav />
-
+        {/* TODO: add loading backdrop here and connect it with context */}
       <main className={classes.content}>
         <div className={classes.toolbar} />
         {children}

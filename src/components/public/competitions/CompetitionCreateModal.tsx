@@ -155,6 +155,8 @@ export default function CompetitionAddForm() {
         return 'Unknown step';
     }
   }
+  // TODO: add fields for priority determination 
+  // TODO: add flags for competition "regional", "international", "championships", "county", "club inner"
   return (
     <>
       <PrivateComponent>

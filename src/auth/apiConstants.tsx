@@ -16,6 +16,8 @@ export default {
     CLUB_CREATE: "club-update",
     CLUB_DELETE: "club-delete",
 
+    CATEGORY_LIST: "category-list",
+
     JUDOKA_LIST: "judoka-list",
     JUDOKA_CREATE: "judoka-create",
     JUDOKA_DETAIL: "judoka-create",
