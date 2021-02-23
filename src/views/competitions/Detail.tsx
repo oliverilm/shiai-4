@@ -1,4 +1,4 @@
-import { Button, Grid, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { Backdrop, CircularProgress, Typography } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import EditIcon from '@material-ui/icons/Edit';
@@ -7,7 +7,6 @@ import { BrowserRouter as Router, Route, RouteComponentProps } from 'react-route
 import styled from "styled-components"
 
 import api from '../../auth';
-import { ChipInput } from '../../components/public/ChipInput';
 import { CategoriesTable } from '../../components/public/competitions/CategoriesTable';
 import { MainDetailTable } from '../../components/public/competitions/MainDetailTable';
 import { AuthContext } from '../../hooks/context';
@@ -56,12 +55,9 @@ const Detail = ({ match }: MatchProps) => {
 
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    
+
     const handleClose = () => {
         setOpen(false);
-    };
-    const handleToggle = () => {
-        setOpen(!open);
     };
 
     const addCategory = (data: any) => {
@@ -99,10 +95,10 @@ const Detail = ({ match }: MatchProps) => {
         </CenterCenter>)
     }
 
-    
+
 
     return (
-        <Grid 
+        <Grid
             container
             direction="column"
             justify="center">
@@ -114,7 +110,7 @@ const Detail = ({ match }: MatchProps) => {
                             {competition.isOwner && <EditIcon style={{ color: "#c1c1c1", cursor: "pointer", fontSize: "40px" }} />}
                         </CenterCenter>
                     </Row>
-                    
+
                     <Grid container direction="row" justify="center" spacing={5}>
                         <Grid item xs={12} md={6} lg={5}>
 
@@ -123,7 +119,7 @@ const Detail = ({ match }: MatchProps) => {
 
                         </Grid>
                         <Grid item xs={12} md={6} lg={5}>
-                            <CategoriesTable onAdd={addCategory} weightClasses={weightClasses} competition={competition}/>
+                            <CategoriesTable onAdd={addCategory} weightClasses={weightClasses} competition={competition} />
                         </Grid>
                     </Grid>
 

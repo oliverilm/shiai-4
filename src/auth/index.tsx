@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios from "axios"
 
 import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
 import { Category, CategoryInCompetition, Competition } from "../utils/interfaces";
@@ -8,6 +8,7 @@ axios.defaults.baseURL = apiConstants.BASE_URL;
 axios.defaults.headers.get['Accept'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.interceptors.request.use(req => {
+    // TODO: add better auth to user logged in status
     // if request needs authentication and it is not provided. log user out.
 
     return req
@@ -25,6 +26,7 @@ const setHeaders = () => {
 
 const getRequest = async (url: string, id?: string): Promise<any> => {
     setHeaders()
+
     return axios.get(url);
 }
 
@@ -36,17 +38,17 @@ const patchRequest = async (url: string, body: object): Promise<any> => {
     return axios.patch(url, body)
 }
 
-const putRequest = async (url: string, body: object): Promise<any> => {
-    return axios.put(url, body)
-}
+// const putRequest = async (url: string, body: object): Promise<any> => {
+//     return axios.put(url, body)
+// }
 
 const deleteRequest = async (url: string): Promise<any> => {
     return axios.delete(url)
 }
 
-const bulkRequest = (requests: Array<AxiosRequestConfig>): Promise<AxiosRequestConfig[]> => {
-    return axios.all(requests)
-}
+// const bulkRequest = (requests: Array<AxiosRequestConfig>): Promise<AxiosRequestConfig[]> => {
+//     return axios.all(requests)
+// }
 
 interface MainResponse {
     status: any;
