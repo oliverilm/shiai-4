@@ -1,4 +1,4 @@
-import { Checkbox, FormControlLabel, TableBody } from '@material-ui/core';
+import { Checkbox, Divider, FormControlLabel, TableBody, Typography } from '@material-ui/core';
 import { Paper, PaperProps, Table, TableCell, TableRow, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
@@ -14,6 +14,7 @@ import Draggable from 'react-draggable';
 
 import api from '../../../auth';
 import { Category, Competition } from '../../../utils/interfaces';
+import { formatCategory, validateCategory } from '../../../utils/validators';
 import { ChipInput } from '../ChipInput';
 
 
@@ -40,14 +41,15 @@ interface Props {
   onAdd: any;
 }
 export default function AddCategoryModal({ competition, onAdd }: Props) {
-  const [menWeight, setMenWeight] = useState<string[]>([""])
-  const [womenWeight, setWomenWeight] = useState<string[]>([""])
-  const [unisexWeight, setUnisexWeight] = useState<string[]>([""])
+  const [menWeight, setMenWeight] = useState<string[]>([])
+  const [womenWeight, setWomenWeight] = useState<string[]>([])
+  const [unisexWeight, setUnisexWeight] = useState<string[]>([])
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
-  const [categories, setCategories] = useState<Category[] | null>(null)
+  const [categories, setCategories] = useState<Category[]>([])
   const [startingYear, setStartingYear] = useState<number | null>(new Date().getFullYear() - 2)
   const [endingYear, setEndingYear] = useState<number | null>(new Date().getFullYear())
   const [open, setOpen] = React.useState(false);
+  const [rules, setRules] = useState<string[]>([])
   const [allowedOver, setAllowedOver] = useState<number>(0)
   const theme = useTheme();
   const classes = useStyles()
@@ -78,22 +80,28 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   const handleSubmit = () => {
     // if data is valid submit
     // TODO: add validation for the input fields and submit or throw error
+
     const data = {
-      competition: competition.slug,
+      competition: competition.uuid,
       menWeights: menWeight,
-      womanWeight: womenWeight,
+      womenWeights: womenWeight,
       unisexWeights: unisexWeight,
       startingYear,
       endingYear,
       identifier: "kg",
-      category: selectedCategory?.value,
-      rules: "",
+      category: selectedCategory?.id,
+      rules,
       amountOverAllowed: allowedOver
     }
-    console.log(data)
-    // if data is valid, close and submit
-    handleClose()
-    onAdd(data)
+    console.log(selectedCategory)
+    if (validateCategory(data)) {
+      // if data is valid, close and submit
+      api.competitions.createCategory(formatCategory(data)).then(res => {
+        console.log(res)
+      })
+      handleClose()
+      onAdd(data);
+    }
   }
 
   const handleClickOpen = () => {
@@ -106,7 +114,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
 
   const handleCategoryChange = (e: any) => {
     setSelectedCategory(() => {
-      const newCat = categories?.find(cat => cat.id === e.target.value) ?? null
+      const newCat = categories?.find(cat => cat.id === e.target.value) || categories[0]
       calculateApprStartAndEnd(newCat)
       return newCat;
     })
@@ -218,7 +226,9 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
               </TableRow>
             </TableBody>
           </Table>
-          <RulePicker onChange={(sel) => { console.log(sel) }} />
+          <Typography variant={"h6"} style={{ marginTop: "1em" }}>Rules</Typography>
+          <Divider />
+          <RulePicker onChange={setRules} />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
@@ -240,18 +250,45 @@ interface RulesProps {
 
 const RulePicker = ({ onChange, rules }: RulesProps) => {
   // TODO : make logic to handle rules change and checked collection
+  const defaultRules: string[] = [
+    "No Shime waza",
+    "No Kansetsu waza",
+    "No Sutemi waza",
+  ]
+  const [selectedRules, setselectedRules] = useState<string[]>([])
+  const rulesList = rules ?? defaultRules
+
   const renderRules = () => {
-    return rules?.map(rule => {
+    return rulesList.map(rule => {
       return (
         <FormControlLabel
-          control={<Checkbox checked={true} onChange={() => {
-            // TODO: handle change function
-          }} name="gilad" />}
+          key={rule}
+          control={<Checkbox
+            checked={selectedRules.includes(rule)} onChange={() => {
+              if (selectedRules.includes(rule)) {
+                setselectedRules(() => {
+                  const newRules = selectedRules.filter(r => r !== rule)
+                  onChange && onChange(newRules)
+                  return newRules;
+                })
+              } else {
+                setselectedRules(() => {
+                  const newRules = [...selectedRules, rule]
+                  onChange && onChange(newRules)
+                  return newRules;
+                })
+              }
+
+            }} name={rule} />}
           label={rule}
         />
       )
     })
   }
 
-  return <div></div>
+  return (
+    <div style={{ display: "grid", gridTemplateColumns: "50% 50%" }}>
+      {renderRules()}
+    </div>
+  )
 }

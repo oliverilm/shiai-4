@@ -24,19 +24,19 @@ export const CategoriesTable = ({ weightClasses, competition, onAdd }: Props) =>
                             <TableCell style={{ color: "#fff" }} align="right">Rules: {rules}</TableCell>
                         </TableRow>
 
-                        { menWeights.length > 0 ? (
+                        { menWeights && menWeights.length > 0 ? (
                             <TableRow>
                                 <TableCell>M</TableCell>
                                 <TableCell align="right">{menWeights}</TableCell>
                             </TableRow>
                         ) : <></>}
-                        { womenWeights.length > 0 ? (
+                        { womenWeights && womenWeights.length > 0 ? (
                             <TableRow>
                                 <TableCell>W</TableCell>
                                 <TableCell align="right">{womenWeights}</TableCell>
                             </TableRow>
                         ) : <></>}
-                        { unisexWeights.length > 0 ? (
+                        { unisexWeights && unisexWeights.length > 0 ? (
                             <TableRow>
                                 <TableCell>U</TableCell>
                                 <TableCell align="right">{unisexWeights}</TableCell>

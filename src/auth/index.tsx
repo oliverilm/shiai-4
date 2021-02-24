@@ -1,7 +1,7 @@
 import axios from "axios"
 
 import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
-import { Category, CategoryInCompetition, Competition } from "../utils/interfaces";
+import { Category, CategoryInCompetition, CategoryInCompetitionPost, Competition } from "../utils/interfaces";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
@@ -151,7 +151,7 @@ const api = {
         delete: (slug: string): Promise<any> =>
             deleteRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
         categories: (slug: string): Promise<RootObject<any>> => getRequest(`${apiConstants.COMPETITION_CATEGORIES}/${slug}`),
-        createCategory: (data: CategoryInCompetition): Promise<RootObject<CategoryInCompetition>> => postRequest(`${apiConstants.COMPETITION_CATEGORIES}/${data.competition.slug}`, data)
+        createCategory: (data: CategoryInCompetitionPost): Promise<RootObject<CategoryInCompetition>> => postRequest(`${apiConstants.COMPETITION_CATEGORIES}/${data.competition}`, data)
     },
     utils: {
         categoryList: (): Promise<RootObject<Category[]>> => getRequest(apiConstants.CATEGORY_LIST)

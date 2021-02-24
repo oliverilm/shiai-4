@@ -60,9 +60,10 @@ const Detail = ({ match }: MatchProps) => {
         setOpen(false);
     };
 
-    const addCategory = (data: any) => {
-        console.log(data)
-        // TODO: post request to api
+    const addCategory = () => {
+        api.competitions.categories(match.params.slug).then(res => {
+            setweightClasses(res.data)
+        })
     }
 
 
