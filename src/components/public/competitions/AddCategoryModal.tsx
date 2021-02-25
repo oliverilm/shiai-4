@@ -44,7 +44,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   const [menWeight, setMenWeight] = useState<string[]>([])
   const [womenWeight, setWomenWeight] = useState<string[]>([])
   const [unisexWeight, setUnisexWeight] = useState<string[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<Category | null>(null)
+  const [selectedCategory, setSelectedCategory] = useState<Category>()
   const [categories, setCategories] = useState<Category[]>([])
   const [startingYear, setStartingYear] = useState<number | null>(new Date().getFullYear() - 2)
   const [endingYear, setEndingYear] = useState<number | null>(new Date().getFullYear())
@@ -58,10 +58,9 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   useEffect(() => {
     let mounted = true
     if (mounted) {
-      // TODO : get categories, add inputs, collect data from inputs, post data
-      // refresh categories in competition detail.
       api.utils.categoryList().then(res => {
         setCategories(res.data)
+        setSelectedCategory(res.data[0])
       })
     }
     return () => {
@@ -70,7 +69,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   }, [])
 
   const calculateApprStartAndEnd = (cat: Category | null) => {
-    // TODO: start and end is not updating correctly
+    // TODO: simplify this
     if (cat === null) return;
     const year = new Date().getFullYear()
     setStartingYear(year - parseInt(cat.underValue, 10) - 2)
@@ -80,7 +79,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   const handleSubmit = () => {
     // if data is valid submit
     // TODO: add validation for the input fields and submit or throw error
-
+    // TODO: refactor to be simpler
     const data = {
       competition: competition.uuid,
       menWeights: menWeight,
@@ -93,14 +92,15 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
       rules,
       amountOverAllowed: allowedOver
     }
-    console.log(selectedCategory)
     if (validateCategory(data)) {
       // if data is valid, close and submit
+      // TODO: throw error if not valid data.
       api.competitions.createCategory(formatCategory(data)).then(res => {
-        console.log(res)
+        if (res.status === 201) {
+          handleClose()
+          onAdd(data);
+        }
       })
-      handleClose()
-      onAdd(data);
     }
   }
 
@@ -114,13 +114,15 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
 
   const handleCategoryChange = (e: any) => {
     setSelectedCategory(() => {
-      const newCat = categories?.find(cat => cat.id === e.target.value) || categories[0]
-      calculateApprStartAndEnd(newCat)
-      return newCat;
+      const newCat = categories.find(cat => cat.value === e.target.value)
+      if (newCat) {
+        calculateApprStartAndEnd(newCat)
+        return newCat;
+      }
     })
   }
 
-
+  // TODO: simplify this
   return (
     <div>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
@@ -147,7 +149,6 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                     value={selectedCategory?.value}
                     onChange={handleCategoryChange}
                   >
-                    <MenuItem></MenuItem>
                     {categories?.map(cat => <MenuItem key={cat.id} value={cat.value}>{cat.value}</MenuItem>)}
                   </Select>
 
@@ -201,6 +202,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                 <TableCell colSpan={2}>
                   <ChipInput
                     label="Men"
+                    value={menWeight}
                     emptyLabel="No weights added"
                     onChange={setMenWeight} />
                 </TableCell>
@@ -211,6 +213,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                 <TableCell colSpan={2}>
                   <ChipInput
                     onChange={setWomenWeight}
+                    value={womenWeight}
                     label="Women"
                     emptyLabel="No weights added" />
                 </TableCell>
@@ -220,6 +223,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                 <TableCell colSpan={2}>
                   <ChipInput
                     onChange={setUnisexWeight}
+                    value={unisexWeight}
                     label="Unisex"
                     emptyLabel="No weights added" />
                 </TableCell>

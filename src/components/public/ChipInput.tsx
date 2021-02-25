@@ -10,10 +10,12 @@ interface Props {
     emptyLabel?: string;
 }
 
-export const ChipInput = ({onChange, value, label, splitters, emptyLabel}: Props) => {
-    const [chips, setChips] = React.useState<string[]>(value || [])
+export const ChipInput = ({ onChange, value = [], label, splitters, emptyLabel }: Props) => {
+    // const [chips, setChips] = React.useState<string[]>(value)
     const [val, setVal] = React.useState<string>("")
     const split = splitters ?? [" ", ",", ";"]
+
+
 
     const addChip = () => {
         if (val.length === 0) return;
@@ -23,24 +25,18 @@ export const ChipInput = ({onChange, value, label, splitters, emptyLabel}: Props
         }
 
 
-        if (!val.includes("+") && !val.includes("-") ) {
+        if (!val.includes("+") && !val.includes("-")) {
             tempVal = "-" + tempVal
         }
-        setChips(() => {
-            const newChips = [...chips, tempVal]
-            onChange && onChange(newChips)
-            return newChips
-
-        })
+        const newChips = [...value, tempVal]
+        onChange && onChange(newChips)
         setVal("")
+
     }
 
     const handleDelete = (index: number) => {
-        setChips(prevChips => {
-            const newChips = prevChips.filter((_, i) => i !== index)
-            onChange && onChange(newChips)
-            return newChips
-        })
+        const newChips = value.filter((_, i) => i !== index)
+        onChange && onChange(newChips)
     }
 
     const change = (e: any) => {
@@ -51,22 +47,22 @@ export const ChipInput = ({onChange, value, label, splitters, emptyLabel}: Props
         } else {
             setVal(e.target.value)
         }
-        
+
     }
 
     return (
-        <div style={{display: 'flex', alignItems: "center", width: "100%"}}>
+        <div style={{ display: 'flex', alignItems: "center", width: "100%" }}>
             <div>
-            <TextField style={{width: 100}} value={val} label={label} onChange={change}/>
+                <TextField style={{ width: 100 }} value={val} label={label} onChange={change} />
             </div>
 
-            <div style={{marginLeft: "1em"}}>
-            { chips.length > 0 ? chips.map((chip, i) => <Chip 
-                key={i}
-                style={{marginTop: 5}}
-                size="small"
-                label={chip} 
-                onDelete={() => {handleDelete(i)}}/>) : emptyLabel ?? ""}   
+            <div style={{ marginLeft: "1em" }}>
+                {value.length > 0 ? value.map((chip, i) => <Chip
+                    key={i}
+                    style={{ marginTop: 5 }}
+                    size="small"
+                    label={chip}
+                    onDelete={() => { handleDelete(i) }} />) : emptyLabel ?? ""}
             </div>
         </div>
     )

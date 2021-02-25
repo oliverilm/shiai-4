@@ -32,9 +32,10 @@ export interface CategoryInCompetition {
     startingYear: string;
     endingYear: string;
     competition: Competition;
-    category: Category;
+    categoryObj: Category;
     rules: string;
     created?: string;
+    id: number;
 }
 
 
