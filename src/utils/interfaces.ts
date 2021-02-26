@@ -51,4 +51,5 @@ export interface CategoryInCompetitionPost {
     category: number;
     rules: string;
     created?: string;
+    id?: number;
 }

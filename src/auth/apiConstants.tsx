@@ -9,6 +9,8 @@ export default {
     COMPETITION_UPDATE: "competition-update",
     COMPETITION_DELETE: "competition-delete",
     COMPETITION_CATEGORIES: "competition-categories",
+    COMPETITION_CATEGORY_UPDATE: "competition-categories-update",
+    COMPETITION_CATEGORY_DELETE: "competition-categories-delete",
 
     CLUB_LIST: "club-list",
     CLUB_DETAIL: "club-create",

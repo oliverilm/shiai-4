@@ -9,11 +9,13 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import React, { useEffect, useState } from 'react';
+import DeleteIcon from '@material-ui/icons/Delete';
+import EditIcon from '@material-ui/icons/Edit';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import Draggable from 'react-draggable';
 
 import api from '../../../auth';
-import { Category, Competition } from '../../../utils/interfaces';
+import { Category, CategoryInCompetition, Competition } from '../../../utils/interfaces';
 import { formatCategory, validateCategory } from '../../../utils/validators';
 import { ChipInput } from '../ChipInput';
 
@@ -39,13 +41,14 @@ const useStyles = makeStyles((theme: Theme) =>
 interface Props {
   competition: Competition;
   onAdd: any;
+  edit?: CategoryInCompetition;
+  categories: Category[];
 }
-export default function AddCategoryModal({ competition, onAdd }: Props) {
+export default function AddCategoryModal({ categories, competition, onAdd, edit }: Props) {
   const [menWeight, setMenWeight] = useState<string[]>([])
   const [womenWeight, setWomenWeight] = useState<string[]>([])
   const [unisexWeight, setUnisexWeight] = useState<string[]>([])
-  const [selectedCategory, setSelectedCategory] = useState<Category>()
-  const [categories, setCategories] = useState<Category[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(categories[0])
   const [startingYear, setStartingYear] = useState<number | null>(new Date().getFullYear() - 2)
   const [endingYear, setEndingYear] = useState<number | null>(new Date().getFullYear())
   const [open, setOpen] = React.useState(false);
@@ -55,18 +58,35 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   const classes = useStyles()
   const fullScreen = useMediaQuery(theme.breakpoints.down('xs'));
 
+  const isValidArr = (str: string): boolean => {
+    try {
+        const arr = JSON.parse(str).join("; ")
+        return arr.length > 0;
+    } catch (e) {
+        return false
+    }
+    return false;
+}
+
   useEffect(() => {
     let mounted = true
+    // TODO: fix multiple category list update
     if (mounted) {
-      api.utils.categoryList().then(res => {
-        setCategories(res.data)
-        setSelectedCategory(res.data[0])
-      })
+      
+      if (edit) {
+        setMenWeight(isValidArr(edit.menWeights) ? JSON.parse(edit.menWeights) : [])
+        setWomenWeight(isValidArr(edit.womenWeights) ? JSON.parse(edit.womenWeights): [])
+        setUnisexWeight(isValidArr(edit.unisexWeights) ? JSON.parse(edit.unisexWeights): [])
+        setSelectedCategory(edit.categoryObj)
+        calculateApprStartAndEnd(edit.categoryObj)
+        setRules(JSON.parse(edit.rules))
+        setAllowedOver(parseInt(edit.amountOverAllowed, 10))
+      }
     }
     return () => {
       mounted = false;
     }
-  }, [])
+  }, [edit])
 
   const calculateApprStartAndEnd = (cat: Category | null) => {
     // TODO: simplify this
@@ -94,14 +114,29 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
     }
     if (validateCategory(data)) {
       // if data is valid, close and submit
-      // TODO: throw error if not valid data.
-      api.competitions.createCategory(formatCategory(data)).then(res => {
-        if (res.status === 201) {
-          handleClose()
-          onAdd(data);
-        }
-      })
+      if (edit) {
+        // update here
+        api.competitions.updateCategory(formatCategory(data), edit.id).then(res => {
+          if (res.status < 300) reset()
+        })
+      } else {
+        // TODO: throw error if not valid data.
+        api.competitions.createCategory(formatCategory(data)).then(res => {
+          if (res.status < 300) reset() 
+        })
+      }
     }
+  }
+
+  const reset = () => {
+    setMenWeight([])
+    setWomenWeight([])
+    setUnisexWeight([])
+    setSelectedCategory(categories[0])
+    setRules([])
+    setAllowedOver(0)
+    handleClose()
+    onAdd();
   }
 
   const handleClickOpen = () => {
@@ -113,21 +148,28 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
   };
 
   const handleCategoryChange = (e: any) => {
-    setSelectedCategory(() => {
-      const newCat = categories.find(cat => cat.value === e.target.value)
-      if (newCat) {
-        calculateApprStartAndEnd(newCat)
-        return newCat;
-      }
-    })
+    if (categories) { 
+      setSelectedCategory(() => {
+        const newCat = categories.find(cat => cat.value === e.target.value)
+        if (newCat) {
+          calculateApprStartAndEnd(newCat)
+          return newCat;
+        }
+      })
+    }
   }
 
   // TODO: simplify this
   return (
     <div>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Add new category
-      </Button>
+      {edit ? (
+        <EditIcon onClick={handleClickOpen} style={{ color: "#c1c1c1", cursor: "pointer", marginLeft: ".5em" }} />
+      ) : (
+        <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+          Add new category
+        </Button>
+      )}
+      
       <Dialog
         PaperComponent={PaperComponent}
         fullScreen={fullScreen}
@@ -135,7 +177,20 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
         onClose={handleClose}
         aria-labelledby="draggable-dialog-title"
       >
-        <DialogTitle id="draggable-dialog-title">Add new Category to {competition.name}</DialogTitle>
+        <DialogTitle id="draggable-dialog-title">
+          <div style={{display: "flex", flexDirection: "row", justifyContent: "space-between", alignItems: "flex-end"}}>
+            <div>Add new Category to {competition.name}</div>
+            {edit && (
+              <div title="Delete this category">
+              <DeleteIcon style={{cursor: "pointer"}} onClick={() => {
+                api.competitions.deleteCategory(edit.id).then(res => {
+                  if (res.status < 300) reset()
+                })
+              }}/>
+            </div>
+            )}
+          </div>
+        </DialogTitle>
         <DialogContent>
           <Table style={{ minWidth: "33em" }}>
             <TableBody>
@@ -184,7 +239,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                   <TextField
                     id="allowed-over"
                     label="Allowed Over (g)"
-                    value={allowedOver}
+                    value={allowedOver || 0}
                     InputProps={{
                       className: classes.input,
                     }}
@@ -192,7 +247,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
                       className: classes.input
                     }}
                     type="number"
-                    onChange={e => { setAllowedOver(parseInt(e.target.value, 10)) }}
+                    onChange={e => { setAllowedOver(parseInt(e.target.value, 10)||0) }}
                     style={{ color: "#fff", maxWidth: "9em" }} />
 
                 </TableCell>
@@ -232,7 +287,7 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
           </Table>
           <Typography variant={"h6"} style={{ marginTop: "1em" }}>Rules</Typography>
           <Divider />
-          <RulePicker onChange={setRules} />
+          <RulePicker value={rules} onChangeRules={setRules} />
         </DialogContent>
         <DialogActions>
           <Button autoFocus onClick={handleClose} color="primary">
@@ -248,11 +303,12 @@ export default function AddCategoryModal({ competition, onAdd }: Props) {
 }
 
 interface RulesProps {
-  onChange?: (selected: string[]) => void;
+  onChangeRules?: (selected: string[]) => void;
   rules?: string[];
+  value: string[];
 }
 
-const RulePicker = ({ onChange, rules }: RulesProps) => {
+const RulePicker = ({ onChangeRules, rules, value }: RulesProps) => {
   // TODO : make logic to handle rules change and checked collection
   const defaultRules: string[] = [
     "No Shime waza",
@@ -268,20 +324,25 @@ const RulePicker = ({ onChange, rules }: RulesProps) => {
         <FormControlLabel
           key={rule}
           control={<Checkbox
-            checked={selectedRules.includes(rule)} onChange={() => {
-              if (selectedRules.includes(rule)) {
-                setselectedRules(() => {
-                  const newRules = selectedRules.filter(r => r !== rule)
-                  onChange && onChange(newRules)
-                  return newRules;
-                })
+            checked={value.includes(rule)} onChange={() => {
+              if (value.includes(rule)) {
+                onChangeRules && onChangeRules(value.filter(r => r !== rule))
               } else {
-                setselectedRules(() => {
-                  const newRules = [...selectedRules, rule]
-                  onChange && onChange(newRules)
-                  return newRules;
-                })
+                onChangeRules && onChangeRules([...value, rule])
               }
+              // if (selectedRules.includes(rule)) {
+                // setselectedRules(() => {
+                  // const newRules = selectedRules.filter(r => r !== rule)
+                  // onChange && onChange(newRules)
+                  // return newRules;
+                // })
+              // } else {
+                // setselectedRules(() => {
+                  // const newRules = [...selectedRules, rule]
+                  // onChange && onChange(newRules)
+                  // return newRules;
+                // })
+              // }
 
             }} name={rule} />}
           label={rule}

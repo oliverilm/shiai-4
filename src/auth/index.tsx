@@ -38,9 +38,9 @@ const patchRequest = async (url: string, body: object): Promise<any> => {
     return axios.patch(url, body)
 }
 
-// const putRequest = async (url: string, body: object): Promise<any> => {
-//     return axios.put(url, body)
-// }
+const putRequest = async (url: string, body: object): Promise<any> => {
+    return axios.put(url, body)
+}
 
 const deleteRequest = async (url: string): Promise<any> => {
     return axios.delete(url)
@@ -151,7 +151,9 @@ const api = {
         delete: (slug: string): Promise<any> =>
             deleteRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
         categories: (slug: string): Promise<RootObject<any>> => getRequest(`${apiConstants.COMPETITION_CATEGORIES}/${slug}`),
-        createCategory: (data: CategoryInCompetitionPost): Promise<RootObject<CategoryInCompetition>> => postRequest(`${apiConstants.COMPETITION_CATEGORIES}/${data.competition}`, data)
+        createCategory: (data: CategoryInCompetitionPost): Promise<RootObject<CategoryInCompetition>> => postRequest(`${apiConstants.COMPETITION_CATEGORIES}/${data.competition}`, data),
+        updateCategory: (data: CategoryInCompetitionPost, id: number): Promise<RootObject<CategoryInCompetition>> => putRequest(`${apiConstants.COMPETITION_CATEGORY_UPDATE}/${id}`, data),
+        deleteCategory: (id: number): Promise<RootObject<any>> => deleteRequest(`${apiConstants.COMPETITION_CATEGORY_DELETE}/${id}`),
     },
     utils: {
         categoryList: (): Promise<RootObject<Category[]>> => getRequest(apiConstants.CATEGORY_LIST)

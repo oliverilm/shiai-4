@@ -10,6 +10,7 @@ interface CategoryData {
     identifier: string;
     category: number | undefined;
     rules: string[];
+    id?: number;
     amountOverAllowed: number;
 }
 
@@ -29,6 +30,7 @@ export const formatCategory = ({
     identifier,
     category,
     rules,
+    id,
     amountOverAllowed
 }: CategoryData): CategoryInCompetitionPost => {
     const data: CategoryInCompetitionPost = {
@@ -40,15 +42,12 @@ export const formatCategory = ({
         category: category || 0,
         rules: JSON.stringify(rules)
     };
-    if (menWeights && menWeights.length > 0) {
-        data.menWeights = JSON.stringify(menWeights)
+    if (id){
+        data.id = id
     }
-    if (womenWeights && womenWeights.length > 0) {
-        data.womenWeights = JSON.stringify(womenWeights)
-    }
-    if (unisexWeights && unisexWeights.length > 0) {
-        data.unisexWeights = JSON.stringify(unisexWeights)
-    }
+    data.menWeights = JSON.stringify(menWeights)
+    data.womenWeights = JSON.stringify(womenWeights)
+    data.unisexWeights = JSON.stringify(unisexWeights)
 
     return data;
 }

@@ -57,7 +57,7 @@ export const ChipInput = ({ onChange, value = [], label, splitters, emptyLabel }
             </div>
 
             <div style={{ marginLeft: "1em" }}>
-                {value.length > 0 ? value.map((chip, i) => <Chip
+                {value && value.length > 0 ? value.map((chip, i) => <Chip
                     key={i}
                     style={{ marginTop: 5 }}
                     size="small"
