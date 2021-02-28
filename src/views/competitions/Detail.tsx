@@ -9,7 +9,7 @@ import styled from "styled-components"
 import api from '../../auth';
 import { CategoriesTable } from '../../components/public/competitions/CategoriesTable';
 import { MainDetailTable } from '../../components/public/competitions/MainDetailTable';
-import { AuthContext } from '../../hooks/context';
+import { AuthContext, LoadingContext } from '../../hooks/context';
 import { CategoryInCompetition, Competition } from '../../utils/interfaces';
 
 
@@ -50,7 +50,7 @@ const Detail = ({ match }: MatchProps) => {
     const auth = useContext(AuthContext)
     const [competition, setCompetition] = useState<Competition | null>(null)
     const [noCompetition, setNoCompetition] = useState<null | false>(null)
-    const [loading, setLoading] = useState(true)
+    const { isLoading, setLoading } = useContext(LoadingContext)
     const [weightClasses, setweightClasses] = useState<CategoryInCompetition[] | null>(null)
 
     const classes = useStyles();
@@ -73,13 +73,12 @@ const Detail = ({ match }: MatchProps) => {
         if (mounted) {
             api.competitions.detail(match.params.slug).then(res => {
                 setCompetition(res.data)
-                setLoading(false)
             }).catch(err => {
                 setNoCompetition(false)
-                setLoading(false)
             })
             api.competitions.categories(match.params.slug).then(res => {
                 setweightClasses(res.data)
+
             })
         }
         return () => {
@@ -103,7 +102,7 @@ const Detail = ({ match }: MatchProps) => {
             container
             direction="column"
             justify="center">
-            {competition ? (
+            {competition && (
                 <Col>
                     <Row>
                         <CenterCenter>
@@ -123,15 +122,11 @@ const Detail = ({ match }: MatchProps) => {
                             <CategoriesTable onAdd={addCategory} weightClasses={weightClasses} competition={competition} />
                         </Grid>
                     </Grid>
-
+                    <img src={competition.image} alt="2" />
                     {JSON.stringify(competition)}
                 </Col>
 
-            ) : (
-                    <Backdrop className={classes.backdrop} open={open} onClick={handleClose}>
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
-                )}
+            )}
         </Grid>
     )
 }

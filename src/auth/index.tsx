@@ -158,13 +158,13 @@ const api = {
     utils: {
         categoryList: (): Promise<RootObject<Category[]>> => getRequest(apiConstants.CATEGORY_LIST)
     },
-    // club: {
-    //     list: () => {},
-    //     detail: () => {},
-    //     create: () => {},
-    //     update: () => {},
-    //     delete: () => {},
-    // },
+    club: {
+        list: () => getRequest(apiConstants.CLUB_LIST),
+        detail: (slug: string) => getRequest(`${apiConstants.CLUB_DETAIL}/slug`),
+        // create: () => {},
+        // update: () => {},
+        // delete: () => {},
+    },
     // judoka: {
     //     list: () => {},
     //     detail: () => {},

@@ -50,7 +50,7 @@ export const CategoriesTable = ({ weightClasses, competition, onAdd }: Props) =>
 
                 return (
                     <TableBody key={id}>
-                        <RulesAccordion categories={categories} edit={cl} competition={competition} onAdd={onAdd}/>
+                        <RulesAccordion categories={categories} edit={cl} competition={competition} onAdd={onAdd} />
 
                         { menWeights && isValidArr(menWeights) ? (
                             <TableRow>
@@ -58,7 +58,7 @@ export const CategoriesTable = ({ weightClasses, competition, onAdd }: Props) =>
                                 <TableCell colSpan={1} align="right">{JSON.parse(menWeights).join("; ")}</TableCell>
                             </TableRow>
                         ) : <></>}
-                        { womenWeights && isValidArr(womenWeights)  ? (
+                        { womenWeights && isValidArr(womenWeights) ? (
                             <TableRow>
                                 <TableCell>W</TableCell>
                                 <TableCell colSpan={1} align="right">{JSON.parse(womenWeights).join("; ")}</TableCell>
@@ -101,9 +101,9 @@ export const CategoriesTable = ({ weightClasses, competition, onAdd }: Props) =>
 }
 
 interface AccordionProps {
-    categories: Category[]; 
-    edit: CategoryInCompetition; 
-    competition: Competition; 
+    categories: Category[];
+    edit: CategoryInCompetition;
+    competition: Competition;
     onAdd: () => void;
 }
 
@@ -111,35 +111,45 @@ function RulesAccordion({
     categories,
     edit,
     competition,
-    onAdd}: AccordionProps) {
+    onAdd }: AccordionProps) {
     const [open, setOpen] = React.useState(false);
     const { startingYear, endingYear, amountOverAllowed, rules, categoryObj: { value } } = edit
-    
-  
+
+
     return (
-      <React.Fragment>
-        <TableRow  style={{ backgroundColor: "#3f51b5", color: "#fff" }}>
+        <React.Fragment>
+            <TableRow style={{ backgroundColor: "#3f51b5", color: "#fff" }}>
 
-          <TableCell component="th" scope="row" style={{color: "#fff"}}> {value} {startingYear} - {endingYear}</TableCell>
-          <TableCell scope="row" style={{ color: "#fff", display: 'flex', flexDirection: "row", justifyContent: "flex-end"}} align="right">
-            <IconButton aria-label="expand row" color="inherit" size="small" onClick={() => setOpen(!open)}>
-              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-            </IconButton>
-            {competition.isOwner && <AddCategoryModal categories={categories} edit={edit} competition={competition} onAdd={onAdd}/>}
-          </TableCell>
+                <TableCell component="th" scope="row" style={{ color: "#fff" }}> {value} {startingYear} - {endingYear}</TableCell>
+                <TableCell scope="row" style={{ color: "#fff", display: 'flex', flexDirection: "row", justifyContent: "flex-end" }} align="right">
+                    <IconButton aria-label="expand row" color="inherit" size="small" onClick={() => setOpen(!open)}>
+                        {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+                    </IconButton>
+                    {competition.isOwner && <AddCategoryModal categories={categories} edit={edit} competition={competition} onAdd={onAdd} />}
+                </TableCell>
 
 
-        </TableRow>
-        <TableRow style={{backgroundColor: "#f2f2f2"}}>
-          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-            <Collapse in={open} timeout="auto" unmountOnExit>
-              <Box margin={1} >
-                <div>Rules: {rules}</div>
-                <div>Overweight allowed: {amountOverAllowed}g</div>
-              </Box>
-            </Collapse>
-          </TableCell>
-        </TableRow>
-      </React.Fragment>
+            </TableRow>
+            <TableRow style={{ backgroundColor: "#f2f2f2" }}>
+                <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+                    <Collapse in={open} timeout="auto" unmountOnExit>
+                        <Box margin={1} >
+                            <Table>
+                                <TableBody>
+                                    <TableRow>
+                                        <TableCell>Rules</TableCell>
+                                        <TableCell>{JSON.parse(rules).map((rule: string) => rule).join(", ")}</TableCell>
+                                    </TableRow>
+                                    <TableRow>
+                                        <TableCell>Overweight</TableCell>
+                                        <TableCell>{amountOverAllowed}</TableCell>
+                                    </TableRow>
+                                </TableBody>
+                            </Table>
+                        </Box>
+                    </Collapse>
+                </TableCell>
+            </TableRow>
+        </React.Fragment>
     );
-  }
+}
