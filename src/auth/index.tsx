@@ -175,7 +175,7 @@ const api = {
     auth: {
         //   authenticate: () => {},
         googleAuth: async (data: any): Promise<any> => {
-            const result = await postRequest("auth/google/", filterCorrectData(data))
+            const result = await postRequest(apiConstants.GOOGLE, filterCorrectData(data))
 
             handleLocalStoragePopulation(result)
             return result
