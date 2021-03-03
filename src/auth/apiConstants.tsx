@@ -8,9 +8,9 @@ export default {
     COMPETITION_CREATE: "api/competition/create",
     COMPETITION_UPDATE: "api/competition/update",
     COMPETITION_DELETE: "api/competition/delete",
-    COMPETITION_CATEGORIES: "api/competition-categories",
-    COMPETITION_CATEGORY_UPDATE: "api/competition-categories-update",
-    COMPETITION_CATEGORY_DELETE: "api/competition-categories-delete",
+    COMPETITION_CATEGORIES: "api/competition/categories",
+    COMPETITION_CATEGORY_UPDATE: "api/competition/categories-update",
+    COMPETITION_CATEGORY_DELETE: "api/competition/categories-delete",
 
     CLUB_LIST: "api/club-list",
     CLUB_DETAIL: "api/club-create",
@@ -26,8 +26,6 @@ export default {
     JUDOKA_UPDATE: "api/judoka-update",
     JUDOKA_DELETE: "api/judoka-delete",
 
-    // FACEBOOK_AUTH_URL: `${BASE}rest-auth/facebook/`,
-    // GOOGLE_AUTH_URL: `${BASE}rest-auth/google/`,
     BASE_URL: BASE,
     TOKEN: "kmasdk2me241ASAS#\"!23alö,f",
     VERIFYUSER: "auth/verifyUser/",
