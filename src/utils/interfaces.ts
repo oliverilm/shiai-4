@@ -32,7 +32,24 @@ export interface CategoryInCompetition {
     startingYear: string;
     endingYear: string;
     competition: Competition;
-    category: Category;
+    categoryObj: Category;
     rules: string;
-    created: string;
+    created?: string;
+    id: number;
+}
+
+
+export interface CategoryInCompetitionPost {
+    menWeights?: string;
+    womenWeights?: string;
+    unisexWeights?: string;
+    identifier: string;
+    amountOverAllowed: string;
+    startingYear: string;
+    endingYear: string;
+    competition: string;
+    category: number;
+    rules: string;
+    created?: string;
+    id?: number;
 }

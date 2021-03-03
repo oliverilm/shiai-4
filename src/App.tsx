@@ -67,7 +67,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ isAuthenticated: isAuthenticated, user: user, login: login, logout: logout, access: null, refresh: null }}>
       <NotificationContext.Provider value={{ addAlert: addAlert }}>
-        <LoadingContext.Provider value={{ isLoading: loading, setLoading: toggleLoading }}>
+        <LoadingContext.Provider value={{ isLoading: loading, setLoading: setLoading }}>
           <Router>
             <div className="App">
               <Navbar>

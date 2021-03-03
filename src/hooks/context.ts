@@ -21,7 +21,7 @@ export const AuthContext = createContext({
 
 export const LoadingContext = createContext({
     isLoading: false,
-    setLoading: () => {
+    setLoading: (bool: boolean) => {
         return;
     },
 })

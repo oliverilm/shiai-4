@@ -3,28 +3,31 @@ const BASE = "http://localhost:8008/"
 
 export default {
 
-    COMPETITION_LIST: "competition-list",
-    COMPETITION_DETAIL: "competition-detail",
-    COMPETITION_CREATE: "competition-create",
-    COMPETITION_UPDATE: "competition-update",
-    COMPETITION_DELETE: "competition-delete",
-    COMPETITION_CATEGORIES: "competition-categories",
+    COMPETITION_LIST: "api/competition/list",
+    COMPETITION_DETAIL: "api/competition/detail",
+    COMPETITION_CREATE: "api/competition/create",
+    COMPETITION_UPDATE: "api/competition/update",
+    COMPETITION_DELETE: "api/competition/delete",
+    COMPETITION_CATEGORIES: "api/competition/categories",
+    COMPETITION_CATEGORY_UPDATE: "api/competition/categories-update",
+    COMPETITION_CATEGORY_DELETE: "api/competition/categories-delete",
 
-    CLUB_LIST: "club-list",
-    CLUB_DETAIL: "club-create",
-    CLUB_UPDATE: "club-create",
-    CLUB_CREATE: "club-update",
-    CLUB_DELETE: "club-delete",
+    CLUB_LIST: "api/club-list",
+    CLUB_DETAIL: "api/club-create",
+    CLUB_UPDATE: "api/club-create",
+    CLUB_CREATE: "api/club-update",
+    CLUB_DELETE: "api/club-delete",
 
-    JUDOKA_LIST: "judoka-list",
-    JUDOKA_CREATE: "judoka-create",
-    JUDOKA_DETAIL: "judoka-create",
-    JUDOKA_UPDATE: "judoka-update",
-    JUDOKA_DELETE: "judoka-delete",
+    CATEGORY_LIST: "api/category-list",
 
-    // FACEBOOK_AUTH_URL: `${BASE}rest-auth/facebook/`,
-    // GOOGLE_AUTH_URL: `${BASE}rest-auth/google/`,
+    JUDOKA_LIST: "api/judoka-list",
+    JUDOKA_CREATE: "api/judoka-create",
+    JUDOKA_DETAIL: "api/judoka-create",
+    JUDOKA_UPDATE: "api/judoka-update",
+    JUDOKA_DELETE: "api/judoka-delete",
+
     BASE_URL: BASE,
     TOKEN: "kmasdk2me241ASAS#\"!23alö,f",
-    VERIFYUSER: "auth/verifyUser/"
+    VERIFYUSER: "auth/verifyUser/",
+    GOOGLE: "auth/google/"
 }

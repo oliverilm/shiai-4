@@ -30,11 +30,11 @@ export default function AuthModal() {
 
   return (
     <div>
-      <Button 
-        variant="outlined" 
-        color="inherit" 
+      <Button
+        variant="outlined"
+        color="inherit"
         onClick={handleClickOpen}>
-          Sign In
+        Sign In
       </Button>
 
 
@@ -46,44 +46,44 @@ export default function AuthModal() {
       >
         <DialogTitle id="alert-dialog-title">Log in to Shiai.eu</DialogTitle>
 
-        <DialogContent style={{minWidth: "25vw", textAlign: "center"}}>
+        <DialogContent style={{ minWidth: "25vw", textAlign: "center" }}>
+          <Col>
             <Col>
-              <Col>
 
-                <GoogleAuthButton />
-                <Divider style={{margin: "1em"}}/>                
-                <FacebookAuthButton />
+              <GoogleAuthButton />
+              <Divider style={{ margin: "1em" }} />
+              <FacebookAuthButton />
 
-              </Col>
-              <Divider style={{margin: "1em 1em"}}/>
-              <Col>
-                    <Typography 
-                      variant="subtitle2"> 
-                        or log in with username and password 
-                    </Typography>
-
-                    <TextField 
-                      id="standard-basic" 
-                      style={{ margin: ".5em"}} 
-                      label="Username" />
-
-                    <TextField 
-                      id="standard-basic" 
-                      style={{ margin: ".5em"}} 
-                      label="Password" 
-                      type={"password"} />
-
-                    <Divider style={{margin: "1em"}}/>
-
-                    <Button variant="outlined" >Log in</Button>
-
-                    <Typography 
-                      variant="subtitle2"
-                      style={{margin: ".5em 0"}}> 
-                      or if you dont have an account, you can log in with google
-                    </Typography>
-              </Col>
             </Col>
+            <Divider style={{ margin: "1em 1em" }} />
+            <Col>
+              <Typography
+                variant="subtitle2">
+                or log in with username and password
+                    </Typography>
+
+              <TextField
+                id="standard-username"
+                style={{ margin: ".5em" }}
+                label="Username" />
+
+              <TextField
+                id="standard-password"
+                style={{ margin: ".5em" }}
+                label="Password"
+                type={"password"} />
+
+              <Divider style={{ margin: "1em" }} />
+
+              <Button variant="outlined" >Log in</Button>
+
+              <Typography
+                variant="subtitle2"
+                style={{ margin: ".5em 0" }}>
+                or if you dont have an account, you can log in with google
+                    </Typography>
+            </Col>
+          </Col>
         </DialogContent>
 
         <DialogActions>

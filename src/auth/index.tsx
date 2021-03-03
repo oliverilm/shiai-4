@@ -1,13 +1,14 @@
-import axios, { AxiosRequestConfig } from "axios"
+import axios from "axios"
 
 import { filterCorrectData, handleLocalStoragePopulation, UserVerifyResult } from "../utils";
-import { Competition } from "../utils/interfaces";
+import { Category, CategoryInCompetition, CategoryInCompetitionPost, Competition } from "../utils/interfaces";
 import apiConstants from "./apiConstants"
 
 axios.defaults.baseURL = apiConstants.BASE_URL;
 axios.defaults.headers.get['Accept'] = 'application/json';
 axios.defaults.headers.post['Accept'] = 'application/json';
 axios.interceptors.request.use(req => {
+    // TODO: add better auth to user logged in status
     // if request needs authentication and it is not provided. log user out.
 
     return req
@@ -25,6 +26,7 @@ const setHeaders = () => {
 
 const getRequest = async (url: string, id?: string): Promise<any> => {
     setHeaders()
+
     return axios.get(url);
 }
 
@@ -44,9 +46,9 @@ const deleteRequest = async (url: string): Promise<any> => {
     return axios.delete(url)
 }
 
-const bulkRequest = (requests: Array<AxiosRequestConfig>): Promise<AxiosRequestConfig[]> => {
-    return axios.all(requests)
-}
+// const bulkRequest = (requests: Array<AxiosRequestConfig>): Promise<AxiosRequestConfig[]> => {
+//     return axios.all(requests)
+// }
 
 interface MainResponse {
     status: any;
@@ -148,15 +150,21 @@ const api = {
 
         delete: (slug: string): Promise<any> =>
             deleteRequest(`${apiConstants.COMPETITION_DETAIL}/${slug}`),
-        categories: (slug: string): Promise<RootObject<any>> => getRequest(`${apiConstants.COMPETITION_CATEGORIES}/${slug}`)
+        categories: (slug: string): Promise<RootObject<any>> => getRequest(`${apiConstants.COMPETITION_CATEGORIES}/${slug}`),
+        createCategory: (data: CategoryInCompetitionPost): Promise<RootObject<CategoryInCompetition>> => postRequest(`${apiConstants.COMPETITION_CATEGORIES}/${data.competition}`, data),
+        updateCategory: (data: CategoryInCompetitionPost, id: number): Promise<RootObject<CategoryInCompetition>> => putRequest(`${apiConstants.COMPETITION_CATEGORY_UPDATE}/${id}`, data),
+        deleteCategory: (id: number): Promise<RootObject<any>> => deleteRequest(`${apiConstants.COMPETITION_CATEGORY_DELETE}/${id}`),
     },
-    // club: {
-    //     list: () => {},
-    //     detail: () => {},
-    //     create: () => {},
-    //     update: () => {},
-    //     delete: () => {},
-    // },
+    utils: {
+        categoryList: (): Promise<RootObject<Category[]>> => getRequest(apiConstants.CATEGORY_LIST)
+    },
+    club: {
+        list: () => getRequest(apiConstants.CLUB_LIST),
+        detail: (slug: string) => getRequest(`${apiConstants.CLUB_DETAIL}/slug`),
+        // create: () => {},
+        // update: () => {},
+        // delete: () => {},
+    },
     // judoka: {
     //     list: () => {},
     //     detail: () => {},
@@ -167,7 +175,7 @@ const api = {
     auth: {
         //   authenticate: () => {},
         googleAuth: async (data: any): Promise<any> => {
-            const result = await postRequest("auth/google/", filterCorrectData(data))
+            const result = await postRequest(apiConstants.GOOGLE, filterCorrectData(data))
 
             handleLocalStoragePopulation(result)
             return result

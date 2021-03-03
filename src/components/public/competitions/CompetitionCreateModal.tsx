@@ -14,9 +14,6 @@ import { convertToRaw, EditorState } from 'draft-js';
 // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
 // @ts-ignore
 import draftToHtml from 'draftjs-to-html';
-// eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-// @ts-ignore
-import draftToMarkdown from 'draftjs-to-markdown';
 import moment from 'moment';
 import React from 'react';
 import { useState } from 'react';
@@ -155,6 +152,8 @@ export default function CompetitionAddForm() {
         return 'Unknown step';
     }
   }
+  // TODO: add fields for priority determination 
+  // TODO: add flags for competition "regional", "international", "championships", "county", "club inner"
   return (
     <>
       <PrivateComponent>
