@@ -69,7 +69,7 @@ export interface ProfileObj {
 
 export interface RootObject {
     Ca: string;
-    uc: Uc;
+    mc: Uc;
     Es: Es;
     googleId: string;
     tokenObj: TokenObj;
@@ -79,7 +79,7 @@ export interface RootObject {
 }
 
 export const filterCorrectData = (data: RootObject): GoogleAuthBodyInterface => {
-    const { access_token, id_token } = data.uc;
+    const { access_token, id_token } = data.mc;
     return { access_token, id_token }
 
 }

@@ -1,4 +1,4 @@
-import "./index.scss"
+import './index.scss';
 
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
@@ -16,8 +16,8 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       width: '100%',
-      maxWidth: "1000px",
-      backgroundColor: "transparent"//theme.palette.background.paper,
+      maxWidth: '1000px',
+      backgroundColor: 'transparent', //theme.palette.background.paper,
     },
     inline: {
       display: 'inline',
@@ -33,41 +33,48 @@ export default function MainList({ competitions }: Props) {
   const classes = useStyles();
 
   const renderCompetitions = (): React.ReactNode[] => {
-    return competitions.map(comp => {
-      return (
-        <div key={comp.uuid}>
-          <ListItem className={"list-item"} alignItems="flex-start" component={Link} to={`/competitions/${comp.slug}`}>
-            <ListItemAvatar>
-              <Avatar alt={comp.name} src={comp.image} >{comp.name.substr(0,1).toUpperCase()}</Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              style={{color: "black"}}
-              primary={comp.name}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    component="span"
-                    variant="body2"
-                    className={classes.inline}
-                    color="textPrimary"
-                  >
-                    {new Date(JSON.parse(comp.dateRange).lower).toDateString()}
-                  </Typography>
-                  {" — " + comp.location}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-        </div>
+    return (
+      competitions &&
+      competitions.map(comp => {
+        return (
+          <div key={comp.uuid}>
+            <ListItem
+              className={'list-item'}
+              alignItems="flex-start"
+              component={Link}
+              to={`/competitions/${comp.slug}`}
+            >
+              <ListItemAvatar>
+                <Avatar alt={comp.name} src={comp.image}>
+                  {comp.name.substr(0, 1).toUpperCase()}
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                style={{ color: 'black' }}
+                primary={comp.name}
+                secondary={
+                  <React.Fragment>
+                    <Typography
+                      component="span"
+                      variant="body2"
+                      className={classes.inline}
+                      color="textPrimary"
+                    >
+                      {new Date(
+                        JSON.parse(comp.dateRange).lower,
+                      ).toDateString()}
+                    </Typography>
+                    {' — ' + comp.location}
+                  </React.Fragment>
+                }
+              />
+            </ListItem>
+            <Divider variant="inset" component="li" />
+          </div>
+        );
+      })
+    );
+  };
 
-      )
-    })
-  }
-
-  return (
-    <List className={classes.root}>
-      {renderCompetitions()}
-    </List>
-  );
+  return <List className={classes.root}>{renderCompetitions()}</List>;
 }
