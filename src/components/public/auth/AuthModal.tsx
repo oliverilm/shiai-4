@@ -5,9 +5,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import TextField from '@material-ui/core/TextField';
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
+import api from '../../../auth';
 import FacebookAuthButton from './FacebookAuthButton';
 import { GoogleAuthButton } from './GoogleAuthButton';
 
@@ -18,7 +19,9 @@ const Col = styled.div`
 `;
 
 export default function AuthModal() {
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -26,6 +29,11 @@ export default function AuthModal() {
 
   const handleClose = () => {
     setOpen(false);
+  };
+
+  const login = () => {
+    const body = { username, password };
+    api.auth.manualLogin(body);
   };
 
   return (
@@ -58,6 +66,7 @@ export default function AuthModal() {
               <TextField
                 id="standard-username"
                 style={{ margin: '.5em' }}
+                onChange={e => setUsername(e.target.value)}
                 label="Username"
               />
 
@@ -65,12 +74,15 @@ export default function AuthModal() {
                 id="standard-password"
                 style={{ margin: '.5em' }}
                 label="Password"
+                onChange={e => setPassword(e.target.value)}
                 type={'password'}
               />
 
               <Divider style={{ margin: '1em' }} />
 
-              <Button variant="outlined">Log in</Button>
+              <Button variant="outlined" onClick={login}>
+                Log in
+              </Button>
 
               <Typography variant="subtitle2" style={{ margin: '.5em 0' }}>
                 or if you dont have an account, you can log in with google

@@ -208,6 +208,10 @@ const api = {
     verifyUser: (): Promise<UserVerifyResult> =>
       getRequest(apiConstants.VERIFYUSER),
     //   facebookAuth: () => {}
+    manualLogin: async (body: { username: string; password: string }) => {
+      const result = await postRequest(apiConstants.MANUAL_LOGIN, body);
+      console.log(result);
+    },
   },
 };
 

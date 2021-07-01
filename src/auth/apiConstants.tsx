@@ -28,5 +28,6 @@ export default {
   BASE_URL: BASE,
   TOKEN: 'kmasdk2me241ASAS#"!23alö,f',
   VERIFYUSER: 'auth/verifyUser/',
+  MANUAL_LOGIN: 'dj-rest-auth/login/',
   GOOGLE: 'auth/google/',
 };
