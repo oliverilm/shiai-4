@@ -1,0 +1,32 @@
+.center {
+    margin: 2em auto;
+    min-width: 50%;
+}
+
+.center-width {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.center-col {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 1000px) {
+    .calendar {
+      width:100%;
+    }
+}
+
+@media only screen and (min-width: 1000px) {
+    .calendar {
+        width: 70%;
+        margin: auto;
+    }
+  }

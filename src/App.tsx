@@ -12,10 +12,10 @@ import {
   NotificationContext,
 } from './hooks/context';
 import { Data, getCredentials, removeCredentials } from './utils/index';
-import PageNotFound from './views/404page/PageNotFound';
 import Competitions from './views/competitions/Competitions';
 import Detail from './views/competitions/Detail';
-import Home from './views/home/Home';
+import HomePage from './views/Home/HomePage';
+import NotFound from './views/NotFound/NotFound';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -98,10 +98,10 @@ function App() {
             <div className="App">
               <Navbar>
                 <Switch>
-                  <Route path="/" component={Home} exact />
+                  <Route path="/" component={HomePage} exact />
                   <Route path="/competitions" component={Competitions} exact />
                   <Route path="/competitions/:slug" component={Detail} exact />
-                  <Route component={PageNotFound} />
+                  <Route component={NotFound} />
                 </Switch>
               </Navbar>
               <div
