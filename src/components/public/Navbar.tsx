@@ -1,4 +1,4 @@
-import "./public.scss"
+import './public.scss';
 
 import {
   AppBar,
@@ -6,24 +6,24 @@ import {
   CssBaseline,
   IconButton,
   Toolbar,
-  Typography
-} from "@material-ui/core"
-import { Backdrop } from "@material-ui/core";
+  Typography,
+} from '@material-ui/core';
+import { Backdrop } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
-import React, { useContext } from 'react'
-import { Link } from "react-router-dom";
+import React, { useContext } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AuthContext, LoadingContext } from '../../hooks/context';
-import NavProfileMenu from "../private/NavProfileMenu";
-import AuthModal from "./auth/AuthModal";
-import BottomNav from "./BottomNav";
-import MainDrawer from "./MainDrawer";
+import NavProfileMenu from '../private/NavProfileMenu';
+import AuthModal from './auth/AuthModal';
+import BottomNav from './BottomNav';
+import MainDrawer from './MainDrawer';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
   },
@@ -66,11 +66,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
-
 const Navbar = ({ children }: any) => {
-  const auth = useContext(AuthContext)
-  const { isLoading, setLoading } = useContext(LoadingContext)
+  const auth = useContext(AuthContext);
+  const { isLoading, setLoading } = useContext(LoadingContext);
   const classes = useStyles();
   const [open, setOpen] = React.useState<boolean>(false);
 
@@ -83,12 +81,11 @@ const Navbar = ({ children }: any) => {
   };
 
   const logout = () => {
-    auth.logout()
-  }
+    auth.logout();
+  };
 
   return (
     <div className={classes.root}>
-
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -109,12 +106,20 @@ const Navbar = ({ children }: any) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component={Link} to={"/"} style={{ flexGrow: 1, textDecoration: "none", color: "white" }}>
+          <Typography
+            variant="h6"
+            noWrap
+            component={Link}
+            to={'/'}
+            style={{ flexGrow: 1, textDecoration: 'none', color: 'white' }}
+          >
             Shiai.eu
-            </Typography>
-          {auth.isAuthenticated
-            ? <NavProfileMenu logout={logout} />
-            : <AuthModal />}
+          </Typography>
+          {auth.isAuthenticated ? (
+            <NavProfileMenu logout={logout} />
+          ) : (
+            <AuthModal />
+          )}
         </Toolbar>
       </AppBar>
 
@@ -128,17 +133,13 @@ const Navbar = ({ children }: any) => {
           </Backdrop>
         </div>
       ) : (
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            {children}
-
-          </main>
-
-        )}
-
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          {children}
+        </main>
+      )}
     </div>
-  )
-}
-
+  );
+};
 
 export default Navbar;
